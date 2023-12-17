@@ -1,6 +1,6 @@
 {
   "name": "@gnx-utilities/services",
-  "version": "0.1.92",
+  "version": "0.1.0",
   "description": "Generic services is a library that allows you to create services with a generic repository",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
