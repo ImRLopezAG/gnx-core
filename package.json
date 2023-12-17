@@ -6,7 +6,14 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "test": "turbo test",
-    "lint": "turbo lint"
+    "test:services": "turbo test --filter @gnx-utilities/services",
+    "test:decorators": "turbo test --filter @gnx-utilities/decorators",
+    "test:validators": "turbo test --filter @gnx-utilities/validators",
+    "pub:services": "turbo publish --filter @gnx-utilities/services",
+    "pub:models": "turbo publish --filter @gnx-utilities/models",
+    "pub:validators": "turbo publish --filter @gnx-utilities/validators",
+    "pub:decorators": "turbo publish --filter @gnx-utilities/decorators",
+    "pub:cli": "turbo publish --filter @gnx-utilities/cli"
   },
   "keywords": [],
   "author": "IMRLopezAG",

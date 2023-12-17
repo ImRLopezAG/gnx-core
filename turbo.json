@@ -14,6 +14,10 @@
     "test": {
       "outputs": ["./dist"],
       "cache": false
+    },
+    "publish": {
+      "dependsOn": ["^publish"],
+      "outputs": ["./lib"]
     }
   }
 }
