@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Default",
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["esnext", "dom"],
+    "removeComments": false,
+    "module": "ES6",
+    "moduleResolution": "node",
+    "newLine": "LF",
+    "declaration": true,
+    "allowJs": false,
+    "outDir": "build",
+    "inlineSourceMap": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  },
+  "include": ["../../apps/**/*.ts"],
+  "exclude": ["**/*/node_modules/**/*"]
+}

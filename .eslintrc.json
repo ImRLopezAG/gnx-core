@@ -1,0 +1,17 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": "@repo/eslint-config/.eslintrc.json",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": true
+  },
+  "rules": {
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/no-unsafe-argument": "off"
+  }
+}

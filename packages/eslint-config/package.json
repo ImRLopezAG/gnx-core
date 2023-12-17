@@ -1,0 +1,19 @@
+{
+  "name": "@repo/eslint-config",
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^42.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-promise": "^6.0.0"
+  },
+  "files": [
+    ".eslintrc.json"
+  ]
+}

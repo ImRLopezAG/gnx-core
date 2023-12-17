@@ -1,0 +1,28 @@
+{
+  "name": "@gnx-utilities/validators",
+  "version": "0.0.4",
+  "description": "Generic services is a library that allows you to create services with a generic repository",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "engines": {
+    "node": ">=16.20.1"
+  },
+  "type": "module",
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.d.ts"
+  ],
+  "scripts": {
+    "start": "pnpm build && node ./lib/index.js",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "tsup && node --test"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/ts-config": "workspace:*",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
+  },
+  "homepage": "https://gnx-udocs.vercel.app"
+}
