@@ -30,24 +30,24 @@ jobs:
         shell: bash
 
       - name: setup node
-        if: ${{ steps.check_version.outputs.skip == 'false' }}
+        if: ${{ env.skip == 'false' }}
         uses: actions/setup-node@v2
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
 
       - name: setup pnpm
-        if: ${{ steps.check_version.outputs.skip == 'false' }}
+        if: ${{ env.skip == 'false' }}
         uses: pnpm/action-setup@v2
         with:
           version: 8
 
       - name: install dependencies
-        if: ${{ steps.check_version.outputs.skip == 'false' }}
+        if: ${{ env.skip == 'false' }}
         run: pnpm install --frozen-lockfile
 
       - name: testing
-        if: ${{ steps.check_version.outputs.skip == 'false' }}
+        if: ${{ env.skip == 'false' }}
         run: pnpm test
   publish-services:
     needs: [test]
@@ -61,43 +61,43 @@ jobs:
       - name: Check if version changed
         id: check_version
         run: |
-          VERSION_CHANGED=$(git diff HEAD^ HEAD -- 'apps/services/package.json' | grep '"version":' || true)
+          VERSION_CHANGED=$(git diff HEAD^ HEAD -- 'apps/validators/package.json' | grep '"version":' || true)
           if [ -z "$VERSION_CHANGED" ]; then
             echo "Version has not changed. Skipping..."
-            echo "::set-output name=skip::true"
+            echo "skip=true" >> $GITHUB_ENV
           else
             echo "Version has changed. Running job..."
-            echo "::set-output name=skip::false"
+            echo "skip=false" >> $GITHUB_ENV
           fi
         shell: bash
 
       - name: setup node
-        if: ${{ steps.check_version.outputs.skip == 'false' }}
+        if: ${{ env.skip == 'false' }}
         uses: actions/setup-node@v2
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
 
       - name: setup pnpm
-        if: ${{ steps.check_version.outputs.skip == 'false' }}
+        if: ${{ env.skip == 'false' }}
         uses: pnpm/action-setup@v2
         with:
           version: 8
 
       - name: install dependencies
-        if: ${{ steps.check_version.outputs.skip == 'false' }}
+        if: ${{ env.skip == 'false' }}
         run: pnpm install --frozen-lockfile
 
       - name: build
-        if: ${{ steps.check_version.outputs.skip == 'false' }}
+        if: ${{ env.skip == 'false' }}
         run: pnpm build
 
       - name: publish
-        if: ${{ steps.check_version.outputs.skip == 'false' }}
+        if: ${{ env.skip == 'false' }}
         run: npm set registry=https://registry.npmjs.org/
 
       - name: publish
-        if: ${{ steps.check_version.outputs.skip == 'false' }}
+        if: ${{ env.skip == 'false' }}
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
