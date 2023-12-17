@@ -8,10 +8,8 @@
   },
   "scripts": {
     "build": "tsup",
-    "swc": "swc src -d dist",
-    "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix",
-    "gnx": "tsup && pnpm dist/index.js"
+    "gnx": "tsup && pnpm dist/index.js",
+    "publish": "pnpm publish --access public"
   },
   "type": "module",
   "author": "",
