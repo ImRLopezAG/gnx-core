@@ -1,21 +1,39 @@
 {
   "name": "@gnx-utilities/validators",
   "version": "0.0.4",
-  "description": "Generic services is a library that allows you to create services with a generic repository",
+  "description": "Fluent Validations is a library that allows you to create validations for your entities  and properties in a simple way.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "engines": {
-    "node": ">=16.20.1"
+    "node": ">=18.0.0"
   },
   "type": "module",
   "files": [
     "lib/**/*.js",
     "lib/**/*.d.ts"
+  ],  
+  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImRLopezAG/generic-service.git"
+  },
+  "homepage": "https://gnx-udocs.vercel.app",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "sequelize",
+    "mongoose",
+    "typegoose",
+    "generic"
   ],
+  "author": "ImRLopezAg",
+  "license": "MIT",
   "scripts": {
     "start": "pnpm build && node ./lib/index.js",
     "build": "tsup",
-    "dev": "tsup --watch",
     "test": "tsup && node --test"
   },
   "devDependencies": {
@@ -23,6 +41,5 @@
     "@repo/ts-config": "workspace:*",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
-  },
-  "homepage": "https://gnx-udocs.vercel.app"
+  }
 }
