@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 2
 
@@ -48,13 +48,13 @@ jobs:
 
       - name: testing
         if: ${{ env.skip == 'false' }}
-        run: pnpm test
+        run: pnpm test:validators
   publish-services:
     needs: [test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 2
 
@@ -98,6 +98,8 @@ jobs:
 
       - name: publish
         if: ${{ env.skip == 'false' }}
-        run: npm publish --access public
+        run: |
+          cd apps/validators
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
