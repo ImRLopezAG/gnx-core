@@ -15,39 +15,21 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
-
-      - name: Check if version changed
-        id: check_version
-        run: |
-          VERSION_CHANGED=$(git diff HEAD^ HEAD -- 'apps/services/package.json' | grep '"version":' || true)
-          if [ -z "$VERSION_CHANGED" ]; then
-            echo "Version has not changed. Skipping..."
-            echo "::set-output name=skip::true"
-          else
-            echo "Version has changed. Running job..."
-            echo "::set-output name=skip::false"
-          fi
-        shell: bash
-
       - name: setup node
-        if: ${{ env.skip == 'false' }}
         uses: actions/setup-node@v2
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
 
       - name: setup pnpm
-        if: ${{ env.skip == 'false' }}
         uses: pnpm/action-setup@v2
         with:
           version: 8
 
       - name: install dependencies
-        if: ${{ env.skip == 'false' }}
         run: pnpm install --frozen-lockfile
 
       - name: testing
-        if: ${{ env.skip == 'false' }}
         run: pnpm test:validators
   publish-services:
     needs: [test]
