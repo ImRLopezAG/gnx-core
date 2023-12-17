@@ -72,7 +72,7 @@ jobs:
 
       - name: build
         if: ${{ env.skip == 'false' }}
-        run: pnpm build
+        run: pnpm build:validators
 
       - name: publish
         if: ${{ env.skip == 'false' }}

@@ -78,7 +78,7 @@ jobs:
 
       - name: build
         if: ${{ env.skip == 'false' }}
-        run: pnpm build
+        run: pnpm build:decorators
 
       - name: publish
         if: ${{ env.skip == 'false' }}
