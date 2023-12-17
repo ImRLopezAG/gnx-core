@@ -61,7 +61,7 @@ jobs:
       - name: Check if version changed
         id: check_version
         run: |
-          VERSION_CHANGED=$(git diff HEAD^ HEAD -- 'package.json' | grep '"version":')
+          VERSION_CHANGED=$(git diff HEAD^ HEAD -- 'apps/services/package.json' | grep '"version":' || true)
           if [ -z "$VERSION_CHANGED" ]; then
             echo "Version has not changed. Skipping..."
             echo "::set-output name=skip::true"
