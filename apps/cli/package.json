@@ -1,19 +1,43 @@
 {
   "name": "@gnx-utilities/cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
-  "main": "lib/index.js",
   "bin": {
     "gnx": "lib/index.js"
   },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "type": "module",
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.d.ts"
+  ],  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImRLopezAG/gnx-core.git"
+  },
+  "homepage": "https://gnx-udocs.vercel.app",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "sequelize",
+    "mongoose",
+    "typegoose",
+    "generic"
+  ],
+  "author": "ImRLopezAg",
+  "license": "MIT",
   "scripts": {
     "build": "tsup",
     "gnx": "tsup && pnpm dist/index.js",
     "publish": "pnpm publish --access public"
   },
-  "type": "module",
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "tsup": "^8.0.1",
