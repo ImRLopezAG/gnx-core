@@ -1,6 +1,6 @@
 {
   "name": "@gnx-utilities/cli",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "",
   "bin": {
     "gnx": "lib/index.js"

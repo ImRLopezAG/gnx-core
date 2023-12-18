@@ -58,6 +58,6 @@ jobs:
         if: ${{ env.skip == 'false' }}
         run: |
           cd apps/cli
-          pnpm pub:cli
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
