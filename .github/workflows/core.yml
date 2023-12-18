@@ -8,7 +8,31 @@ on:
       - 'package.json'
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+
+      - name: setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: testing
+        run: pnpm test
   publish-core:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -56,6 +80,6 @@ jobs:
 
       - name: publish
         if: ${{ env.skip == 'false' }}
-        run: npm publish --access public
+        run: pnpm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}

@@ -10,6 +10,5 @@ export default defineConfig({
   dts: true,
   keepNames: true,
   minifySyntax: true,
-  external: ['pg-hstore'],
-  sourcemap: true
+  external: ['pg-hstore']
 })
