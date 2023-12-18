@@ -1,6 +1,6 @@
 {
   "name": "@gnx-utilities/cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "bin": {
     "gnx": "lib/index.js"
@@ -35,8 +35,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsup",
-    "gnx": "tsup && pnpm dist/index.js",
-    "publish": "pnpm publish --access public"
+    "gnx": "tsup && pnpm dist/index.js"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
