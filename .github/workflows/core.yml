@@ -48,7 +48,7 @@ jobs:
 
       - name: build
         if: ${{ env.skip == 'false' }}
-        run: pnpm build:cli
+        run: pnpm build:pkg
 
       - name: publish
         if: ${{ env.skip == 'false' }}
