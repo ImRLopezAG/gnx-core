@@ -8,16 +8,16 @@ Generic  is a library that allows you to create services, models, validations, d
 >You need to have one of the ORM or ODM to manage the data before. The supported ORMs/ODMs are Sequelize and Typegoose wich needs moongose.
 
 ```bash
-npm install @gnx/core
+npm install @gnx-utilities/core
 ```
 ```bash
-pnpm add @gnx/core
+pnpm add @gnx-utilities/core
 ```
 ```bash
-yarn add @gnx/core
+yarn add @gnx-utilities/core
 ```
 ```bash
-bun add @gnx/core
+bun add @gnx-utilities/core
 ```
 
 ## 📖 Usage
@@ -25,9 +25,9 @@ bun add @gnx/core
 ### Sequelize
 
 ```typescript
-import { SequelizeBaseEntity } from '@gnx/models'
+import { SequelizeBaseEntity } from '@gnx-utilities/models'
 import { DataTypes, Sequelize } from 'sequelize'
-import { SequelizeService } from '@gnx/core'
+import { SequelizeService } from '@gnx-utilities/core'
 
 export const sequelize = new Sequelize('test', 'postgres', 'root', {
   host: 'localhost',
@@ -69,9 +69,9 @@ console.log(user.firstName); // John
 >On prop decorator you need to add the type of the property, if you don't do this, the library will not work properly.
 
 ```typescript
-import { TypegooseService } from '@gnx/core';
+import { TypegooseService } from '@gnx-utilities/core';
 import { getModelForClass, prop } from '@typegoose/typegoose'
-import { TypegooseBaseEntity } from '@gnx/models'
+import { TypegooseBaseEntity } from '@gnx-utilities/models'
 
 export class User extends TypegooseBaseEntity {
   @prop({ type: String })
@@ -101,8 +101,8 @@ console.log(user.firstName); // John
 ### Override methods
 
 ```typescript
-import { SequelizeService } from '@gnx/core';
-import { ServiceParams, ServiceParamsWithEntity, ServiceParamsWithId } from '@gnx/models';
+import { SequelizeService } from '@gnx-utilities/core';
+import { ServiceParams, ServiceParamsWithEntity, ServiceParamsWithId } from '@gnx-utilities/models';
 
 export class UserService extends SequelizeService {
   constructor() {
@@ -126,8 +126,8 @@ export class UserService extends SequelizeService {
 ```
 
 ```typescript
-import { TypegooseService } from '@gnx/core';
-import { ServiceParams, ServiceParamsWithEntity, ServiceParamsWithId } from '@gnx/models';
+import { TypegooseService } from '@gnx-utilities/core';
+import { ServiceParams, ServiceParamsWithEntity, ServiceParamsWithId } from '@gnx-utilities/models';
 
 export class UserService extends TypegooseService {
   constructor() {
