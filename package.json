@@ -1,7 +1,37 @@
 {
   "name": "@gnx-utilities/core",
-  "version": "1.0.3",
+  "version": "1.0.5",
+
   "description": "",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "type": "module",
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.d.ts"
+  ],  
+  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImRLopezAG/generic-service.git"
+  },
+  "homepage": "https://gnx-udocs.vercel.app",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "sequelize",
+    "mongoose",
+    "typegoose",
+    "generic"
+  ],
+  "author": "ImRLopezAg",
+  "license": "MIT",
   "scripts": {
     "build": "turbo build",
     "build:pkg": "tsup",
@@ -21,9 +51,6 @@
     "pub:decorators": "turbo publish --filter @gnx-utilities/decorators",
     "pub:cli": "turbo publish --filter @gnx-utilities/cli"
   },
-  "keywords": [],
-  "author": "IMRLopezAG",
-  "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.10.4",
     "@repo/eslint-config": "workspace:*",
