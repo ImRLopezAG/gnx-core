@@ -1,6 +1,6 @@
 {
   "name": "@gnx-utilities/validators",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Fluent Validations is a library that allows you to create validations for your entities  and properties in a simple way.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -10,9 +10,10 @@
   "type": "module",
   "files": [
     "lib/**/*.js",
-    "lib/**/*.d.ts"
-  ],  
-  
+    "lib/**/*.cjs",
+    "lib/**/*.d.ts",
+    "lib/**/*.d.cts"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ImRLopezAG/gnx-core.git"
