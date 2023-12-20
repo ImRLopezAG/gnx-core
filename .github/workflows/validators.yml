@@ -27,7 +27,7 @@ jobs:
           version: 8
 
       - name: install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: testing
         run: pnpm test:validators
@@ -68,7 +68,7 @@ jobs:
 
       - name: install dependencies
         if: ${{ env.skip == 'false' }}
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: build
         if: ${{ env.skip == 'false' }}

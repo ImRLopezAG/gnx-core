@@ -33,7 +33,7 @@ jobs:
           mongodb-version: 6.0
 
       - name: install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: test
         run: pnpm test:decorators
@@ -74,7 +74,7 @@ jobs:
 
       - name: install dependencies
         if: ${{ env.skip == 'false' }}
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: build
         if: ${{ env.skip == 'false' }}
