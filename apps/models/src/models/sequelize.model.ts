@@ -34,7 +34,8 @@ import type { Id } from './types'
  */
 
 export abstract class SequelizeBaseEntity extends Model {
-  declare id: Id
-  declare createdAt: Date
-  declare updatedAt: Date
+  public id: Id
+  public createdAt: Date
+  public updatedAt: Date
+  public isDeleted: boolean
 }

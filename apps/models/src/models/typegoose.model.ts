@@ -1,5 +1,6 @@
 import { pre, prop } from '@typegoose/typegoose'
-import { Document, ObjectId } from 'mongoose'
+import type { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses'
+import { Document } from 'mongoose'
 
 /**
  * @classdesc TypegooseBaseEntity is an abstract class that extends the Typegoose Document class.
@@ -10,24 +11,25 @@ import { Document, ObjectId } from 'mongoose'
  * import { getModelForClass, prop } from '@typegoose/typegoose'
  *
  * export class Entity extends TypegooseBaseEntity {
- *   // @prop({ required: true }) The @prop decorator is used to define the properties of the entity.
+ *   .@prop({ required: true, type: String }) // The .@prop decorator is used to define the properties of the entity.
  *   declare name: string
  * }
  *
  * export const EntityModel = getModelForClass(Entity)
+ * @todo You need to provide the type of the properties of the entity as in the example.
  */
 
 @pre<TypegooseBaseEntity>('findOneAndUpdate', function (next) {
-  this.$set({ updatedAt: new Date().toISOString() })
+  this.updatedAt = new Date()
   next()
 })
-export abstract class TypegooseBaseEntity extends Document {
-  @prop()
-  declare _id: ObjectId
-
-  @prop({ default: () => new Date().toISOString() })
+export abstract class TypegooseBaseEntity extends Document implements TimeStamps {
+  @prop({ default: () => new Date(), type: Date })
   declare createdAt: Date
 
-  @prop({ default: () => new Date().toISOString() })
+  @prop({ default: () => new Date(), type: Date })
   declare updatedAt: Date
+
+  @prop({ default: false, type: Boolean })
+  declare isDeleted: boolean
 }
