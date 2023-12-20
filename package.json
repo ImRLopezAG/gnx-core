@@ -2,7 +2,7 @@
   "name": "@gnx-utilities/core",
   "version": "1.0.7",
 
-  "description": "",
+  "description": "GNX is a collect of utilities that are used across all of our projects. It is a collection of utilities that we have found useful in our projects and we hope you will find them useful in yours. We have tried to make them as generic as possible so that they can be used in any project.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "engines": {
@@ -11,9 +11,10 @@
   "type": "module",
   "files": [
     "lib/**/*.js",
-    "lib/**/*.d.ts"
-  ],  
-  
+    "lib/**/*.cjs",
+    "lib/**/*.d.ts",
+    "lib/**/*.d.cts"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ImRLopezAG/generic-service.git"
@@ -50,6 +51,14 @@
     "pub:validators": "turbo publish --filter @gnx-utilities/validators",
     "pub:decorators": "turbo publish --filter @gnx-utilities/decorators",
     "pub:cli": "turbo publish --filter @gnx-utilities/cli"
+  },
+  "dependencies": {
+    "@gnx-utilities/decorators": "workspace:*",
+    "@gnx-utilities/models": "workspace:*",
+    "@gnx-utilities/services": "workspace:*",
+    "@gnx-utilities/validators": "workspace:*",
+    "mongoose": "^8.0.2",
+    "sequelize": "^6.35.1"
   },
   "devDependencies": {
     "@types/node": "^20.10.4",

@@ -7,6 +7,25 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@gnx-utilities/decorators':
+        specifier: workspace:*
+        version: link:apps/decorators
+      '@gnx-utilities/models':
+        specifier: workspace:*
+        version: link:apps/models
+      '@gnx-utilities/services':
+        specifier: workspace:*
+        version: link:apps/services
+      '@gnx-utilities/validators':
+        specifier: workspace:*
+        version: link:apps/validators
+      mongoose:
+        specifier: ^8.0.2
+        version: 8.0.3
+      sequelize:
+        specifier: ^6.35.1
+        version: 6.35.2(sqlite3@5.1.6)
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -52,8 +71,8 @@ importers:
   apps/decorators:
     dependencies:
       '@gnx-utilities/models':
-        specifier: ^0.2.2
-        version: 0.2.2(sqlite3@5.1.6)
+        specifier: workspace:*
+        version: link:../models
       '@swc/core':
         specifier: ^1.3.100
         version: 1.3.100
@@ -111,8 +130,8 @@ importers:
   apps/services:
     dependencies:
       '@gnx-utilities/models':
-        specifier: ^0.2.2
-        version: 0.2.2(sqlite3@5.1.6)
+        specifier: workspace:*
+        version: link:../models
       '@typegoose/typegoose':
         specifier: ^12.0.0
         version: 12.0.0(mongoose@8.0.3)
@@ -426,33 +445,6 @@ packages:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
     requiresBuild: true
     optional: true
-
-  /@gnx-utilities/models@0.2.2(sqlite3@5.1.6):
-    resolution: {integrity: sha512-HKBNHl/8MngrBZwHz05w03+8Jt6sikTEK4GWlP771NE4i6OjJf+PUDByU+A86IOPz1Ui7g1BYwKXZhhDB9vg+Q==}
-    engines: {node: '>=16.20.1'}
-    dependencies:
-      '@typegoose/typegoose': 12.0.0(mongoose@8.0.3)
-      mongoose: 8.0.3
-      sequelize: 6.35.2(sqlite3@5.1.6)
-    transitivePeerDependencies:
-      - '@aws-sdk/credential-providers'
-      - '@mongodb-js/zstd'
-      - gcp-metadata
-      - ibm_db
-      - kerberos
-      - mariadb
-      - mongodb-client-encryption
-      - mysql2
-      - oracledb
-      - pg
-      - pg-hstore
-      - snappy
-      - snowflake-sdk
-      - socks
-      - sqlite3
-      - supports-color
-      - tedious
-    dev: false
 
   /@humanwhocodes/config-array@0.11.13:
     resolution: {integrity: sha512-JSBDMiDKSzQVngfRjOdFXgFfklaXI4K9nLF49Auh21lmBWRLIK3+xTErTWD4KU54pb6coM6ESE7Awz/FNU3zgQ==}
