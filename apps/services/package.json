@@ -1,6 +1,6 @@
 {
   "name": "@gnx-utilities/services",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Generic services is a library that allows you to create services with a generic repository",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -45,9 +45,9 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@gnx-utilities/models": "0.2.4",
-    "@typegoose/typegoose": "^12.0.0",
-    "mongoose": "^8.0.2",
-    "sequelize": "^6.35.1"
+    "@gnx-utilities/models": "*",
+    "@typegoose/typegoose": "*",
+    "mongoose": "*",
+    "sequelize": "*"
   }
 }

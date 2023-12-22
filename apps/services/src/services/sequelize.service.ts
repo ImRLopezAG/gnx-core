@@ -194,7 +194,8 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
     try {
       const item = await this.model.findByPk(id)
       if (!item) throw new Error(`${this.model.name} not found`)
-      return await item.update(entity)
+      const updated = await item.update(entity)
+      return updated
     } catch {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
@@ -259,9 +260,7 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
    */
   async restore ({ id }: ServiceParamsWithId): Promise<boolean> {
     try {
-      const entity = await this.model.findByPk(id)
-      if (!entity) throw new Error(`${this.model.name} not found`)
-      await entity.update({ isDeleted: false })
+      await this.update({ id, entity: { isDeleted: false } })
       return true
     } catch {
       throw new GNXErrorHandler({
