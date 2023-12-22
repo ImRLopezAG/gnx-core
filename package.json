@@ -53,10 +53,10 @@
     "pub:cli": "turbo publish --filter @gnx-utilities/cli"
   },
   "dependencies": {
-    "@gnx-utilities/decorators": "workspace:*",
-    "@gnx-utilities/models": "workspace:*",
-    "@gnx-utilities/services": "workspace:*",
-    "@gnx-utilities/validators": "workspace:*",
+    "@gnx-utilities/decorators": "*",
+    "@gnx-utilities/models": "*",
+    "@gnx-utilities/services": "*",
+    "@gnx-utilities/validators": "*",
     "mongoose": "^8.0.2",
     "sequelize": "^6.35.1"
   },
