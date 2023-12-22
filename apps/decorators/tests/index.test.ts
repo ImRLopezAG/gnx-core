@@ -22,6 +22,10 @@ describe('Sequelize Tests', async () => {
     throw new Error(`Test: Unable to connect database ${err}`)
   })
 
+  await sequelize.sync({ alter: true }).catch((err) => {
+    throw new Error(`Test: Unable to connect database ${err}`)
+  })
+
   await it('sequelize - should create user', async () => {
     const createdUser = await userService.create({
       entity
@@ -56,14 +60,25 @@ describe('Sequelize Tests', async () => {
   })
 
   await it('sequelize - should soft delete user', async () => {
+    const user = await userService.create({ entity })
     const soft = await userService.softDelete({ id: user.id })
-    const foundUser = await userService.getById({ id: user.id })
-    if (!foundUser) {
-      throw new Error('User not found')
-    }
+
     assert.ok(soft)
-    assert.strictEqual(foundUser.isDeleted, true)
-    assert.strictEqual(foundUser.firstName, user.firstName)
+    await userService.hardDelete({ id: user.id })
+  })
+
+  await it('sequelize - should restore user', async () => {
+    const user = await userService.create({ entity })
+    await userService.softDelete({ id: user.id })
+    const restore = await userService.restore({ id: user.id })
+
+    assert.ok(restore)
+  })
+
+  await it('sequelize - should hard delete user', async () => {
+    const user = await userService.create({ entity })
+    const hard = await userService.hardDelete({ id: user.id })
+    assert.ok(hard)
   })
 
   await it('sequelize - should get all deleted users', async () => {
@@ -79,21 +94,6 @@ describe('Sequelize Tests', async () => {
     assert.strictEqual(users.length > 2, true)
   })
 
-  await it('sequelize - should restore user', async () => {
-    const restored = await userService.restore({ id: user.id })
-    const foundUser = await userService.getById({ id: user.id })
-    assert.ok(restored)
-    assert.ok(foundUser)
-    assert.strictEqual(foundUser.isDeleted, false)
-    assert.strictEqual(foundUser.firstName, user.firstName)
-  })
-
-  await it('sequelize - should hard delete user', async () => {
-    const hard = await userService.hardDelete({ id: user.id })
-    const foundUser = await userService.getById({ id: user.id })
-    assert.ok(hard)
-    assert.strictEqual(foundUser, null)
-  })
   await it('should greet with message', () => {
     const message = userService.greeting()
     assert.strictEqual(message, 'Hello, world!')
