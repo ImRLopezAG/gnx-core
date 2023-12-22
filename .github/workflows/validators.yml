@@ -27,7 +27,7 @@ jobs:
           version: 8
 
       - name: install dependencies
-        run: pnpm install --no-link-workspace-packages
+        run: pnpm install --no-link-workspace-packages --no-frozen-lockfile
 
       - name: testing
         run: pnpm test:validators
@@ -68,7 +68,7 @@ jobs:
 
       - name: install dependencies
         if: ${{ env.skip == 'false' }}
-        run: pnpm install --no-link-workspace-packages
+        run: pnpm install --no-link-workspace-packages --no-frozen-lockfile
 
       - name: build
         if: ${{ env.skip == 'false' }}

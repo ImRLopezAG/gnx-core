@@ -44,7 +44,7 @@ jobs:
 
       - name: install dependencies
         if: ${{ env.skip == 'false' }}
-        run: pnpm install --no-link-workspace-packages
+        run: pnpm install --no-link-workspace-packages --no-frozen-lockfile
 
       - name: build
         if: ${{ env.skip == 'false' }}
