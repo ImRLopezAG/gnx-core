@@ -40,6 +40,10 @@ export interface Schema {
   field: string | any
   allowNull: boolean | any
 }
+
+export interface ExcludeFields {
+  exclude: string[]
+}
 export interface GenericService<T extends Entity> {
   getAll: () => Promise<T[]>
   getAllPaginated: ({ page, limit }: PaginationType) => Promise<Pagination<T>>
@@ -51,7 +55,7 @@ export interface GenericService<T extends Entity> {
   softDelete: ({ id }: ServiceParamsWithId) => Promise<boolean>
   restore: ({ id }: ServiceParamsWithId) => Promise<boolean>
   hardDelete: ({ id }: ServiceParamsWithId) => Promise<boolean>
-  getSchema: () => Schema[]
+  getSchema: ({ exclude }?: ExcludeFields) => Schema[]
 }
 
 export interface GNXError {
@@ -69,5 +73,5 @@ export enum GNXErrorTypes {
   NOT_FOUND_ERROR,
   GETTING_ERROR,
   ID_NOT_FOUND_ERROR,
-  UNEXPECTED_ERROR,
+  UNEXPECTED_ERROR
 }
