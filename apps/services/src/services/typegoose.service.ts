@@ -1,4 +1,5 @@
 import type {
+  ExcludeFields,
   GenericService,
   Pagination,
   PaginationType,
@@ -285,17 +286,12 @@ implements GenericService<T> {
   }
 
   /**
-   * Get schema
-   * @returns {Schema[]}
-   * @memberof GenericSequelizeService
-   * @example
-   * const schema = await userService.getSchema()
-   * console.log(schema)
-   * // [
-   * //   { field: 'name', allowNull: false }
-   * // ]
+   * Retrieves the schema of the model, excluding specified fields.
+   * @param exclude - An object specifying the fields to exclude from the schema.
+   * @returns An array of Schema objects representing the model's schema.
    */
-  getSchema (): Schema[] {
+  getSchema ({ exclude }: ExcludeFields = { exclude: ['updatedAt', 'createdAt'] }): Schema[] {
+    exclude = [...exclude, 'updatedAt', 'createdAt']
     const schemaPaths = this.model.schema.paths
     const schema: Schema[] = Object.keys(schemaPaths).map((field: string) => {
       const schemaPath = schemaPaths[field]
@@ -307,9 +303,7 @@ implements GenericService<T> {
     return schema.filter(
       (f) =>
         f.allowNull === false &&
-        f.field !== 'createdAt' &&
-        f.field !== 'updatedAt' &&
-        f.field !== '_id'
+        !exclude.includes(f.field)
     )
   }
 }

@@ -86,6 +86,11 @@ describe('Sequelize Tests', async () => {
     assert.ok(users)
     assert.strictEqual(users.length > 2, true)
   })
+
+  await it('sequelize - should return the schema', () => {
+    const schema = userService.getSchema({ exclude: ['id'] })
+    assert.ok(schema)
+  })
 }).catch((err) => {
   console.log(err)
 })
@@ -186,6 +191,11 @@ describe('Typegoose Tests', async () => {
       id: String(user._id)
     })
     assert.ok(hard)
+  })
+
+  await it('typegoose - should return the schema', () => {
+    const schema = userService.getSchema()
+    assert.ok(schema)
   })
 }).catch(() => {
   console.log('error')

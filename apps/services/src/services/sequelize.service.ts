@@ -1,4 +1,4 @@
-import type { GenericService, Pagination, PaginationType, Schema, SequelizeBaseEntity, ServiceParams, ServiceParamsWithEntity, ServiceParamsWithId } from '@gnx-utilities/models'
+import type { GenericService, SequelizeBaseEntity, PaginationType, Pagination, ServiceParamsWithId, ServiceParamsWithEntity, ServiceParams, Schema, ExcludeFields } from '@gnx-utilities/models'
 import { GNXErrorHandler, GNXErrorTypes } from '@gnx-utilities/models'
 import type { ModelStatic } from 'sequelize'
 import { Op } from 'sequelize'
@@ -144,7 +144,6 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
    * console.log(user)
    * // { id: 5f9d1b2b9f9e4b2b9f9e4b2b, name: 'John', createdAt: 2020-10-30T12:00:00.000Z, updatedAt: 2020-10-30T12:00:00.000Z }
    */
-
   async getById ({ id }: ServiceParamsWithId): Promise<SequelizeEntity | null> {
     try {
       const entity = await this.model.findByPk(id)
@@ -271,12 +270,12 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
   }
 
   /**
-   * Map model fields to schema
-   * @private
-   * @returns {Schema[]}
-   * @memberof SequelizeService
+   * Retrieves the schema of the model, excluding specified fields.
+   * @param exclude - An object specifying the fields to exclude from the schema.
+   * @returns An array of Schema objects representing the model's schema.
    */
-  getSchema (): Schema[] {
+  getSchema ({ exclude }: ExcludeFields = { exclude: ['updatedAt', 'createdAt'] }): Schema[] {
+    exclude = [...exclude, 'updatedAt', 'createdAt']
     const fields = this.model.rawAttributes
     const schema: Schema[] = Object.keys(fields).map((field: string) => {
       const type = fields[field].field
@@ -285,6 +284,6 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
         allowNull: fields[field].allowNull
       }
     })
-    return schema.filter(f => f.allowNull === false && f.field !== 'createdAt' && f.field !== 'updatedAt')
+    return schema.filter(f => f.allowNull === false && !exclude.includes(f.field))
   }
 }
