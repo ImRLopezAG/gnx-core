@@ -1,6 +1,6 @@
 {
   "name": "@gnx-utilities/services",
-  "version": "0.1.32",
+  "version": "0.1.33",
   "description": "Generic services is a library that allows you to create services for your models in a simple way, it is compatible with sequelize, mongoose and typegoose",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -53,7 +53,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@gnx-utilities/models": "workspace:*",
+    "@gnx-utilities/models": "*",
     "@typegoose/typegoose": "*",
     "mongoose": "*",
     "sequelize": "*"
