@@ -3,9 +3,10 @@ import chalk from 'chalk'
 
 import {
   SequelizeModelTemplate,
-  SequelizeServiceTemplate,
+  SequelizeServiceTemplateTS,
+  SequelizeServiceTemplateJS,
   TypegooseModelTemplate,
-  TypegooseServiceTemplate,
+  TypegooseServiceTemplateTS,
   createTemplate
 } from '../utils/'
 
@@ -17,7 +18,7 @@ interface ServiceOptions {
   template: 'sequelize' | 'typegoose'
 }
 
-type Content = Omit<ServiceOptions, 'dir' | 'ext'>
+type Content = Omit<ServiceOptions, 'dir'>
 type Creation = Omit<ServiceOptions, 'template' | 'category'>
 
 export async function creation ({ name, dir, ext }: Creation): Promise<void> {
@@ -73,21 +74,21 @@ export async function creation ({ name, dir, ext }: Creation): Promise<void> {
         dir,
         category,
         ext: ext ?? 'ts',
-        content: getContent({ name, template, category })
+        content: getContent({ name, template, category, ext })
       })
       console.log(chalk.green(`Template created successfully: ${dir}/${name}.${category}.${ext || 'ts'}`))
     })
-    .catch((error) => {
+    .catch((error: unknown) => {
       console.log(chalk.red(error))
       process.exit(1)
     })
 }
 
-function getContent ({ category, name, template }: Content): string {
+function getContent ({ category, name, template, ext }: Content): string {
   const categories = {
     service: {
-      typegoose: TypegooseServiceTemplate({ name }),
-      sequelize: SequelizeServiceTemplate({ name })
+      typegoose: TypegooseServiceTemplateTS({ name }),
+      sequelize: ext === 'ts' ? SequelizeServiceTemplateTS({ name }) : SequelizeServiceTemplateJS({ name })
     },
     model: {
       typegoose: TypegooseModelTemplate({ name }),

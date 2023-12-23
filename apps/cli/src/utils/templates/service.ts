@@ -3,26 +3,17 @@ interface ServiceTemplateOptions {
   name: string
 }
 
-export function SequelizeServiceTemplate ({ name }: ServiceTemplateOptions): string {
+export function SequelizeServiceTemplateTS ({ name }: ServiceTemplateOptions): string {
   name = capitalizeFirstLetter(name)
-  return `import { ${name}Model } from '@/models'
-import { SequelizeService } from '@gnx-utilities/core'
-
-export class ${name}Service extends SequelizeService<${name}> {
-  constructor () {
-    super(${name})
-  }
-}`
+  return `import { ${name}Model, ${name} } from '@/models'\nimport { SequelizeService } from '@gnx-utilities/core'\n\nexport class ${name}Service extends SequelizeService<${name}> {\n  constructor () {\n    super(${name})\n  }\n}\n`
 }
 
-export function TypegooseServiceTemplate ({ name }: ServiceTemplateOptions): string {
+export function SequelizeServiceTemplateJS ({ name }: ServiceTemplateOptions): string {
   name = capitalizeFirstLetter(name)
-  return `import { ${name}Model } from '@/models'
-import { TypegooseService } from '@gnx-utilities/core'
+  return `import { ${name}Model } from '@/models'\nimport { SequelizeService } from '@gnx-utilities/core'\n\nexport class ${name}Service extends SequelizeService {\n  constructor () {\n    super(${name})\n  }\n}\n`
+}
 
-export class ${name}Service extends TypegooseService<${name}> {
-  constructor () {
-    super(${name})
-  }
-}`
+export function TypegooseServiceTemplateTS ({ name }: ServiceTemplateOptions): string {
+  name = capitalizeFirstLetter(name)
+  return `import { ${name}Model, ${name}  } from '@/models'\nimport { TypegooseService } from '@gnx-utilities/core'\n\nexport class ${name}Service extends TypegooseService<${name}> {\n  constructor () {\n    super(${name})\n  }\n}\n`
 }
