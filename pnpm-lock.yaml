@@ -9,16 +9,16 @@ importers:
   .:
     dependencies:
       '@gnx-utilities/decorators':
-        specifier: '*'
+        specifier: workspace:*
         version: link:apps/decorators
       '@gnx-utilities/models':
-        specifier: '*'
+        specifier: workspace:*
         version: link:apps/models
       '@gnx-utilities/services':
-        specifier: '*'
+        specifier: workspace:*
         version: link:apps/services
       '@gnx-utilities/validators':
-        specifier: '*'
+        specifier: workspace:*
         version: link:apps/validators
       mongoose:
         specifier: ^8.0.2
@@ -71,7 +71,7 @@ importers:
   apps/decorators:
     dependencies:
       '@gnx-utilities/models':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../models
       '@swc/core':
         specifier: ^1.3.100
@@ -114,33 +114,15 @@ importers:
         specifier: ^6.35.1
         version: 6.35.2(sqlite3@5.1.6)
     devDependencies:
-      '@types/node':
-        specifier: ^20.10.1
-        version: 20.10.5
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^6.4.0
-        version: 6.15.0(@typescript-eslint/parser@6.15.0)(eslint@8.56.0)(typescript@5.3.3)
-      eslint:
-        specifier: ^8.0.1
-        version: 8.56.0
-      eslint-config-standard-with-typescript:
-        specifier: ^40.0.0
-        version: 40.0.0(@typescript-eslint/eslint-plugin@6.15.0)(eslint-plugin-import@2.29.1)(eslint-plugin-n@16.5.0)(eslint-plugin-promise@6.1.1)(eslint@8.56.0)(typescript@5.3.3)
-      eslint-plugin-import:
-        specifier: ^2.25.2
-        version: 2.29.1(@typescript-eslint/parser@6.15.0)(eslint@8.56.0)
-      eslint-plugin-n:
-        specifier: '^15.0.0 || ^16.0.0 '
-        version: 16.5.0(eslint@8.56.0)
-      eslint-plugin-promise:
-        specifier: ^6.0.0
-        version: 6.1.1(eslint@8.56.0)
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/ts-config':
+        specifier: workspace:*
+        version: link:../../packages/ts-config
       tsup:
         specifier: ^8.0.1
         version: 8.0.1(@swc/core@1.3.101)(typescript@5.3.3)
-      tsx:
-        specifier: ^4.6.0
-        version: 4.7.0
       typescript:
         specifier: ^5.3.2
         version: 5.3.3
@@ -148,7 +130,7 @@ importers:
   apps/services:
     dependencies:
       '@gnx-utilities/models':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../models
       '@typegoose/typegoose':
         specifier: '*'
@@ -1651,28 +1633,6 @@ packages:
       eslint: '>=6.0.0'
     dependencies:
       eslint: 8.56.0
-    dev: true
-
-  /eslint-config-standard-with-typescript@40.0.0(@typescript-eslint/eslint-plugin@6.15.0)(eslint-plugin-import@2.29.1)(eslint-plugin-n@16.5.0)(eslint-plugin-promise@6.1.1)(eslint@8.56.0)(typescript@5.3.3):
-    resolution: {integrity: sha512-GXUJcwIXiTQaS3H4etv8a1lejVVdZYaxZNz3g7vt6GoJosQqMTurbmSC4FVGyHiGT/d1TjFr3+47A3xsHhsG+Q==}
-    peerDependencies:
-      '@typescript-eslint/eslint-plugin': ^6.4.0
-      eslint: ^8.0.1
-      eslint-plugin-import: ^2.25.2
-      eslint-plugin-n: '^15.0.0 || ^16.0.0 '
-      eslint-plugin-promise: ^6.0.0
-      typescript: '*'
-    dependencies:
-      '@typescript-eslint/eslint-plugin': 6.15.0(@typescript-eslint/parser@6.15.0)(eslint@8.56.0)(typescript@5.3.3)
-      '@typescript-eslint/parser': 6.15.0(eslint@8.56.0)(typescript@5.3.3)
-      eslint: 8.56.0
-      eslint-config-standard: 17.1.0(eslint-plugin-import@2.29.1)(eslint-plugin-n@16.5.0)(eslint-plugin-promise@6.1.1)(eslint@8.56.0)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.15.0)(eslint@8.56.0)
-      eslint-plugin-n: 16.5.0(eslint@8.56.0)
-      eslint-plugin-promise: 6.1.1(eslint@8.56.0)
-      typescript: 5.3.3
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /eslint-config-standard-with-typescript@42.0.0(@typescript-eslint/eslint-plugin@6.15.0)(eslint-plugin-import@2.29.1)(eslint-plugin-n@16.5.0)(eslint-plugin-promise@6.1.1)(eslint@8.56.0)(typescript@5.3.3):
@@ -3763,17 +3723,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
       - ts-node
-    dev: true
-
-  /tsx@4.7.0:
-    resolution: {integrity: sha512-I+t79RYPlEYlHn9a+KzwrvEwhJg35h/1zHsLC2JXvhC2mdynMv6Zxzvhv5EMV6VF5qJlLlkSnMVvdZV3PSIGcg==}
-    engines: {node: '>=18.0.0'}
-    hasBin: true
-    dependencies:
-      esbuild: 0.19.10
-      get-tsconfig: 4.7.2
-    optionalDependencies:
-      fsevents: 2.3.3
     dev: true
 
   /turbo-darwin-64@1.11.2:
