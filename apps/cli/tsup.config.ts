@@ -7,10 +7,10 @@ export default defineConfig({
   clean: true,
   entry: ['src/index.ts'],
   format,
-  minify: !isDev,
+  minify: true,
   target: 'esnext',
   outDir: isDev ? 'dist' : 'lib',
   dts: isDev ? undefined : true,
-  keepNames: isDev,
+  keepNames: true,
   minifySyntax: true
 })
