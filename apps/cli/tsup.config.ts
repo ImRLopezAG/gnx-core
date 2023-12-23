@@ -12,5 +12,9 @@ export default defineConfig({
   outDir: isDev ? 'dist' : 'lib',
   dts: isDev ? undefined : true,
   keepNames: true,
-  minifySyntax: true
+  minifySyntax: true,
+  splitting: false,
+  sourcemap: false,
+  minifyIdentifiers: true,
+  skipNodeModulesBundle: true
 })
