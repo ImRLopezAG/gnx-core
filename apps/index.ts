@@ -1,3 +1,5 @@
 export * from './decorators/lib'
 export * from './services/lib'
 export * from './validators/lib'
+export * from './models/lib'
+export * from './cli/lib'
