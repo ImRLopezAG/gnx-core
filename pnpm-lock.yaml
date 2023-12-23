@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@gnx-utilities/cli':
+        specifier: workspace:*
+        version: link:apps/cli
       '@gnx-utilities/decorators':
         specifier: workspace:*
         version: link:apps/decorators
