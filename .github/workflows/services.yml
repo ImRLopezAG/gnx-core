@@ -35,6 +35,9 @@ jobs:
       - name: install dependencies
         run: pnpm install --no-link-workspace-packages --no-frozen-lockfile
 
+      - name: build
+        run: pnpm build
+
       - name: test
         run: pnpm test:services
   publish-services:

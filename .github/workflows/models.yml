@@ -1,41 +1,14 @@
-name: 📦 Publish Validators
+name: 📦 Publish models
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'apps/validators/package.json'
+      - 'apps/models/package.json'
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-      - name: setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
-          registry-url: https://registry.npmjs.org/
-
-      - name: setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - name: install dependencies
-        run: pnpm install --no-link-workspace-packages --no-frozen-lockfile
-
-      - name: build
-        run: pnpm build
-
-      - name: testing
-        run: pnpm test:validators
-  publish-services:
-    needs: [test]
+  publish-models:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -46,7 +19,7 @@ jobs:
       - name: Check if version changed
         id: check_version
         run: |
-          VERSION_CHANGED=$(git diff HEAD^ HEAD -- 'apps/validators/package.json' | grep '"version":' || true)
+          VERSION_CHANGED=$(git diff HEAD^ HEAD -- 'apps/models/package.json' | grep '"version":' || true)
           if [ -z "$VERSION_CHANGED" ]; then
             echo "Version has not changed. Skipping..."
             echo "skip=true" >> $GITHUB_ENV
@@ -58,7 +31,7 @@ jobs:
 
       - name: setup node
         if: ${{ env.skip == 'false' }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
@@ -75,7 +48,7 @@ jobs:
 
       - name: build
         if: ${{ env.skip == 'false' }}
-        run: pnpm build:validators
+        run: pnpm build:models
 
       - name: publish
         if: ${{ env.skip == 'false' }}
@@ -84,7 +57,7 @@ jobs:
       - name: publish
         if: ${{ env.skip == 'false' }}
         run: |
-          cd apps/validators
+          cd apps/models
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
