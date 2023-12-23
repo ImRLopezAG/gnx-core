@@ -9,19 +9,19 @@ importers:
   .:
     dependencies:
       '@gnx-utilities/cli':
-        specifier: workspace:*
+        specifier: '*'
         version: link:apps/cli
       '@gnx-utilities/decorators':
-        specifier: workspace:*
+        specifier: '*'
         version: link:apps/decorators
       '@gnx-utilities/models':
-        specifier: workspace:*
+        specifier: '*'
         version: link:apps/models
       '@gnx-utilities/services':
-        specifier: workspace:*
+        specifier: '*'
         version: link:apps/services
       '@gnx-utilities/validators':
-        specifier: workspace:*
+        specifier: '*'
         version: link:apps/validators
       mongoose:
         specifier: ^8.0.2
@@ -74,7 +74,7 @@ importers:
   apps/decorators:
     dependencies:
       '@gnx-utilities/models':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../models
       '@swc/core':
         specifier: ^1.3.100
@@ -133,7 +133,7 @@ importers:
   apps/services:
     dependencies:
       '@gnx-utilities/models':
-        specifier: workspace:*
+        specifier: '*'
         version: link:../models
       '@typegoose/typegoose':
         specifier: '*'
