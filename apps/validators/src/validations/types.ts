@@ -14,7 +14,11 @@ export interface SoftValidation {
 
 export type ValidationsOptions = BasicsValidation & NumbersValidation & StringsValidation
 
-export type Validations = 'isString' | 'isBoolean' | 'isArray' | 'isObject' | 'isFunction' | 'isUndefined' | 'isNumber' | 'isEqualTo' | 'isGreaterThan' | 'isGreaterThanOrEqualTo' | 'isLessThan' | 'isLessThanOrEqualTo' | 'isBetween' | 'isMaxLength' | 'isMinLength' | 'isLengthBetween' | 'isLengthEqual' | 'isLengthGreaterThan' | 'isLengthGreaterThanOrEqualTo' | 'isLengthLessThan' | 'isLengthLessThanOrEqualTo' | 'isDivisibleBy' | 'isPositive' | 'isNegative' | 'isEmail' | 'isURL' | 'isGmail' | 'isOutlook' | 'isDate' | 'isDateAfter' | 'isDateBefore' | 'isDateBetween' | 'isGuid' | 'isHexColor' | 'isHexadecimal' | 'isIP' | 'isIPv4' | 'isIPv6' | 'isJSON' | 'isLowercase' | 'isUppercase' | 'isUUID' | 'isCreditCard' | 'isRequired'
+export type Validations = KeyOf<ValidationsOptions>
+
+export type KeyOf<T> = {
+  [K in keyof T]: T[K] extends any ? K : never
+}[keyof T]
 
 export interface Between {
   min: any
