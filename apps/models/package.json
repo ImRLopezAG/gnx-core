@@ -1,0 +1,62 @@
+{
+  "name": "@gnx-utilities/models",
+  "version": "0.2.4",
+  "description": "Generic services is a library that allows you to create services with a generic repository",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js"
+    },
+    "./lib/index.js": "./lib/index.js",
+    "./lib/index.d.ts": "./lib/index.d.ts"
+  },
+  "engines": {
+    "node": ">=16.20.1"
+  },
+  "type": "module",
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.d.ts"
+  ],
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "express",
+    "sequelize",
+    "mongoose",
+    "typegoose",
+    "generic"
+  ],
+  "author": "ImRLopezAg",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.1",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "eslint": "^8.0.1",
+    "eslint-config-standard-with-typescript": "^40.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
+    "eslint-plugin-promise": "^6.0.0",
+    "tsup": "^8.0.1",
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "@typegoose/typegoose": "^12.0.0",
+    "mongoose": "^8.0.2",
+    "sequelize": "^6.35.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImRLopezAG/generic-service.git"
+  },
+  "homepage": "https://gnx-udocs.vercel.app",
+  "publishConfig": {
+    "access": "public"
+  }
+}
