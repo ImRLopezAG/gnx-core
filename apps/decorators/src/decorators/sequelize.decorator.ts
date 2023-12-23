@@ -1,13 +1,4 @@
-import type {
-  GenericService,
-  Pagination,
-  PaginationType,
-  Schema,
-  SequelizeBaseEntity,
-  ServiceParams,
-  ServiceParamsWithEntity,
-  ServiceParamsWithId
-} from '@gnx-utilities/models'
+import type { GenericService, Pagination, PaginationType, Schema, SequelizeBaseEntity, ServiceParams, ServiceParamsWithEntity, ServiceParamsWithId, ExcludeFields } from '@gnx-utilities/models'
 import { GNXErrorHandler, GNXErrorTypes } from '@gnx-utilities/models'
 import type { ModelStatic } from 'sequelize'
 import { Op } from 'sequelize'
@@ -20,6 +11,7 @@ interface ISequelizeRepository {
 type Repository<T extends SequelizeBaseEntity> = GenericService<T> & {
   model: ModelStatic<SequelizeBaseEntity>
 }
+
 /**
  * Sequelize repository decorator
  * @param {ISequelizeRepository} { model }
@@ -56,7 +48,6 @@ type Repository<T extends SequelizeBaseEntity> = GenericService<T> & {
  * const users = await userService.getAll()
  * console.log(users) // [ { id: 1, name: 'John', createdAt: 2020-10-30T12:00:00.000Z, updatedAt: 2020-10-30T12:00:00.000Z } ]
  */
-
 function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequelizeRepository): ClassDecorator {
   return function (constructor) {
     Object.assign<any, Repository<T>>(constructor.prototype, {
@@ -316,12 +307,12 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
       },
 
       /**
-       * Map model fields to schema
-       * @private
-       * @returns {Schema[]}
-       * @memberof SequelizeService
+       * Retrieves the schema of the model, excluding specified fields.
+       * @param exclude - An object specifying the fields to exclude from  the schema.
+       * @returns An array of Schema objects representing the model's schema.
        */
-      getSchema: function (): Schema[] {
+      getSchema: function ({ exclude }: ExcludeFields = { exclude: ['updatedAt', 'createdAt'] }): Schema[] {
+        exclude = [...exclude, 'updatedAt', 'createdAt']
         const fields = this.model.rawAttributes
         const schema: Schema[] = Object.keys(fields).map((field: string) => {
           const type = fields[field].field
@@ -330,12 +321,7 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
             allowNull: fields[field].allowNull
           }
         })
-        return schema.filter(
-          (f) =>
-            f.allowNull === false &&
-            f.field !== 'createdAt' &&
-            f.field !== 'updatedAt'
-        )
+        return schema.filter(f => f.allowNull === false && !exclude.includes(f.field))
       }
     })
   }
