@@ -8,6 +8,14 @@
     "node": ">=18.0.0"
   },
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js"
+    },
+    "./lib/index.js": "./lib/index.js",
+    "./lib/index.d.ts": "./lib/index.d.ts"
+  },
   "files": [
     "lib/**/*.js",
     "lib/**/*.cjs",

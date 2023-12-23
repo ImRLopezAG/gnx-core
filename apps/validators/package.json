@@ -4,6 +4,14 @@
   "description": "Fluent Validations is a library that allows you to create validations for your entities  and properties in a simple way.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js"
+    },
+    "./lib/index.js": "./lib/index.js",
+    "./lib/index.d.ts": "./lib/index.d.ts"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
