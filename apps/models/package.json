@@ -1,6 +1,6 @@
 {
   "name": "@gnx-utilities/models",
-  "version": "0.2.41",
+  "version": "0.2.42",
   "description": "Generic models is a library that allows you to create models for sequelize, mongoose and typegoose in a generic way, without having to write the same code over and over again.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -40,6 +40,9 @@
   ],
   "author": "ImRLopezAg",
   "license": "MIT",
+  "scripts": {
+    "build": "tsup"
+  },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/ts-config": "workspace:*",
