@@ -95,13 +95,18 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
       }: PaginationType): Promise<Pagination<T>> {
         try {
           const data = await this.model.findAndCountAll({
+            where: {
+              isDeleted: {
+                [Op.eq]: false
+              }
+            },
             offset: (page - 1) * limit,
             limit
           })
           return {
-            entities: data.rows.filter(({ isDeleted }) => !isDeleted),
+            entities: data.rows,
             currentPage: page,
-            totalPages: data.count
+            totalPages: Math.ceil(data.count / limit)
           }
         } catch {
           throw new GNXErrorHandler({

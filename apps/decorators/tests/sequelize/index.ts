@@ -4,7 +4,7 @@ import { sequelizeRepository } from '../../src/decorators/sequelize.decorator.js
 
 export const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: ':memory:'
+  storage: './db/test.sqlite'
 })
 
 export class SequelizeUser extends SequelizeBaseEntity {
