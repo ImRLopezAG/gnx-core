@@ -39,7 +39,7 @@ jobs:
         run: pnpm build
 
       - name: test
-        run: pnpm test
+        run: pnpm build:test
   publish-core:
     needs: test
     runs-on: ubuntu-latest
