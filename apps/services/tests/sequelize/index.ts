@@ -1,6 +1,6 @@
 import { SequelizeBaseEntity } from '@gnx-utilities/models'
 import { DataTypes, Sequelize } from 'sequelize'
-import { SequelizeService } from '../../src/services/sequelize.service.js'
+import { SequelizeService } from '../../src/services/sequelize.service'
 
 export const sequelize = new Sequelize({
   dialect: 'sqlite',

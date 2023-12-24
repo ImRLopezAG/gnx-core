@@ -12,7 +12,7 @@ const entity = {
 type Sequelize = typeof entity & { id: number | string }
 type Typegoose = typeof entity & { _id?: string }
 
-describe('Sequelize Tests', async () => {
+await describe('Sequelize Tests', async () => {
   const userService = new SequelizeUserService()
   let user: Sequelize
   await sequelize.sync({ alter: true }).catch((err) => {
@@ -84,7 +84,7 @@ describe('Sequelize Tests', async () => {
     }
     const users = await userService.getAllDeleted()
     assert.ok(users)
-    assert.strictEqual(users.length > 2, true)
+    assert.strictEqual(users.length >= 3, true)
     assert.strictEqual(users.every((user) => user.dataValues.isDeleted), true)
   })
 
@@ -106,15 +106,25 @@ describe('Sequelize Tests', async () => {
     assert.strictEqual(users.entities.length, 3)
     assert.strictEqual(users.totalPages, Math.ceil(all.length / 3))
   })
-  await it('sequelize - should return the schema', () => {
+
+  await it('sequelize #bulkDelete - should bulk delete users', async () => {
+    const users = await userService.bulkDelete()
+    assert.ok(users)
+  })
+
+  await it('sequelize #bulkCreate - should bulk create users', async () => {
+    const users = await userService.bulkCreate({ entities: Array(2).fill(entity) })
+    assert.ok(users)
+    assert.strictEqual(users.length, 2)
+  })
+
+  await it('sequelize #schema - should return the schema', () => {
     const schema = userService.getSchema({ exclude: ['id'] })
     assert.strictEqual(schema.length === 0, true)
   })
-}).catch((err) => {
-  console.log(err)
 })
 
-describe('Typegoose Tests', async () => {
+await describe('Typegoose Tests', async () => {
   const uri = 'mongodb://localhost:27017/?readPreference=primary&ssl=false&directConnection=true'
   const userService = new TypegooseUserService()
 
@@ -140,6 +150,7 @@ describe('Typegoose Tests', async () => {
   await it('Typegoose #getAll - should get all users', async () => {
     const users = await userService.getAll()
     assert.ok(users)
+    assert.strictEqual(users.every((user) => user.isDeleted), false)
   })
 
   await it('typegoose #getById - should get user by id', async () => {
@@ -201,6 +212,7 @@ describe('Typegoose Tests', async () => {
   })
 
   await it('typegoose #getAllPaginated - should get all paginated users', async () => {
+    await userService.bulkCreate({ entities: Array(10).fill(entity) })
     const users = await userService.getAllPaginated({ limit: 3, page: 1 })
     const all = await userService.getAll()
     assert.ok(users)
@@ -209,13 +221,23 @@ describe('Typegoose Tests', async () => {
     assert.strictEqual(users.totalPages, Math.ceil(all.length / 3))
   })
 
+  await it('typegoose #bulkDelete - should bulk delete users', async () => {
+    const deleted = await userService.bulkDelete()
+    assert.ok(deleted)
+  })
+
+  await it('typegoose #bulkCreate - should bulk create users', async () => {
+    const users = await userService.bulkCreate({ entities: Array(2).fill(entity) })
+
+    assert.ok(users)
+    assert.strictEqual(users.length, 2)
+    await userService.bulkDelete()
+  })
+
   await it('typegoose #schema - should return the schema', () => {
     const schema = userService.getSchema()
-    console.log(schema)
     assert.strictEqual(schema.length === 0, true)
   })
-}).catch(() => {
-  console.log('error')
 }).finally(() => {
   setTimeout(() => {
     process.exit()
