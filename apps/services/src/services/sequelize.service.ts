@@ -38,7 +38,6 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
    * console.log(users)
    * // [ { id: 5f9d1b2b9f9e4b2b9f9e4b2b, name: 'John', createdAt: 2020-10-30T12:00:00.000Z, updatedAt: 2020-10-30T12:00:00.000Z } ]
    */
-
   async getAll (): Promise<SequelizeEntity[]> {
     try {
       const entities = await this.model.findAll({
@@ -70,11 +69,20 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
    */
   async getAllPaginated ({ page, limit }: PaginationType): Promise<Pagination<SequelizeEntity>> {
     try {
-      const data = await this.model.findAndCountAll({ offset: (page - 1) * limit, limit })
+      const data = await this.model.findAndCountAll({
+        // @ts-expect-error isDeleted is not defined in the model by default
+        where: {
+          isDeleted: {
+            [Op.eq]: false
+          }
+        },
+        offset: (page - 1) * limit,
+        limit
+      })
       return {
-        entities: data.rows.filter(({ isDeleted }) => !isDeleted),
+        entities: data.rows,
         currentPage: page,
-        totalPages: data.count
+        totalPages: Math.ceil(data.count / limit)
       }
     } catch {
       throw new GNXErrorHandler({
