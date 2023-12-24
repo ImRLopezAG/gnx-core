@@ -1,0 +1,67 @@
+{
+  "name": "@gnx-utilities/controllers",
+  "version": "0.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js"
+    },
+    "./lib/index.js": "./lib/index.js",
+    "./lib/index.d.ts": "./lib/index.d.ts"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "type": "module",
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.cjs",
+    "lib/**/*.d.ts",
+    "lib/**/*.d.cts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImRLopezAG/generic-service.git"
+  },
+  "homepage": "https://gnx-udocs.vercel.app",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "sequelize",
+    "mongoose",
+    "typegoose",
+    "generic"
+  ],
+  "author": "ImRLopezAg",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup",
+    "test": "tsup && node --test"
+  },
+  "dependencies": {
+    "@gnx-utilities/models": "*",
+    "@gnx-utilities/services": "*",
+    "express": "*"
+  },
+  "devDependencies": {
+    "mongoose": "*",
+    "sequelize": "*",
+    "supertest": "*",
+    "@types/supertest": "*",
+    "@typegoose/typegoose": "*",
+    "sqlite3": "*",
+    "@types/express": "*",
+    "@types/node": "*",
+    "@repo/ts-config": "workspace:*",
+    "@repo/eslint-config": "workspace:*",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "pnpm@8.10.5"
+}
