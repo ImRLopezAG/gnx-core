@@ -4,6 +4,8 @@ import type { ModelStatic } from 'sequelize'
 import { Op } from 'sequelize'
 import type { MakeNullishOptional } from 'sequelize/types/utils'
 
+type Creation<T extends SequelizeBaseEntity> = MakeNullishOptional<T['_creationAttributes']>
+
 /**
  * Generic service for sequelize
  * @param SequelizeEntity
@@ -20,7 +22,6 @@ import type { MakeNullishOptional } from 'sequelize/types/utils'
  *
  * export const userService = new UserService()
  */
-
 export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEntity> implements GenericService<SequelizeEntity> {
   /**
    * Creates an instance of SequelizeService.
@@ -91,6 +92,7 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
       })
     }
   }
+
   /**
    * Get all deleted entities
    * @returns {Promise<SequelizeEntity[]>}
@@ -100,7 +102,6 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
    * console.log(users)
    * // [ { id: 5f9d1b2b9f9e4b2b9f9e4b2b, name: 'John', createdAt: 2020-10-30T12:00:00.000Z, deletedAt: 2020-10-30T12:00:00.000Z } ]
    */
-
   async getAllDeleted (): Promise<SequelizeEntity[]> {
     try {
       const entities = await this.model.findAll({
@@ -176,7 +177,7 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
    */
   async create ({ entity }: ServiceParamsWithEntity): Promise<SequelizeEntity> {
     try {
-      const created = await this.model.create(entity as unknown as MakeNullishOptional<SequelizeEntity['_creationAttributes']> | undefined)
+      const created = await this.model.create(entity as unknown as Creation<SequelizeEntity>)
       if (!created) throw new Error(`Error creating ${this.model.name}`)
       return created
     } catch (e) {
@@ -268,6 +269,48 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
   async restore ({ id }: ServiceParamsWithId): Promise<boolean> {
     try {
       await this.update({ id, entity: { isDeleted: false } })
+      return true
+    } catch {
+      throw new GNXErrorHandler({
+        message: `${this.model.name} not found`,
+        errorType: GNXErrorTypes.NOT_FOUND_ERROR
+      })
+    }
+  }
+
+  /**
+   * Creates multiple instances of SequelizeEntity in bulk.
+   *
+   * @param entities - An array of SequelizeEntity objects to be created.
+   * @returns A Promise that resolves to an array of created SequelizeEntity objects.
+   * @throws GNXErrorHandler if there is an error creating the entities.
+   */
+  async bulkCreate ({ entities }: { entities: SequelizeEntity[] }): Promise<SequelizeEntity[]> {
+    try {
+      const created = await this.model.bulkCreate(entities as unknown as Array<Creation<SequelizeEntity>>, { returning: true })
+      if (!created) throw new Error(`Error creating ${this.model.name}`)
+      return created
+    } catch (e) {
+      throw new GNXErrorHandler({
+        message: e.message,
+        errorType: GNXErrorTypes.CREATION_ERROR
+      })
+    }
+  }
+
+  /**
+   * Deletes all records in the database table associated with the Sequelize model.
+   *
+   * @returns A promise that resolves to a boolean indicating whether the bulk delete operation was successful.
+   * @throws {GNXErrorHandler} If the model is not found in the database.
+   */
+  async bulkDelete (): Promise<boolean> {
+    try {
+      await this.model.findAll().then(async (entities) => {
+        for (const entity of entities) {
+          await entity.destroy()
+        }
+      })
       return true
     } catch {
       throw new GNXErrorHandler({
