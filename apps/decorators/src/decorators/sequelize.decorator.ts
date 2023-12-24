@@ -12,6 +12,8 @@ type Repository<T extends SequelizeBaseEntity> = GenericService<T> & {
   model: ModelStatic<SequelizeBaseEntity>
 }
 
+type Creation<T extends SequelizeBaseEntity> = MakeNullishOptional<T['_creationAttributes']>
+
 /**
  * Sequelize repository decorator
  * @param {ISequelizeRepository} { model }
@@ -201,9 +203,7 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
       create: async function ({ entity }: ServiceParamsWithEntity): Promise<T> {
         try {
           const created = await this.model.create(
-            entity as unknown as
-              | MakeNullishOptional<T['_creationAttributes']>
-              | undefined
+            entity as unknown as Creation<T>
           )
           if (!created) throw new Error(`Error creating ${this.model.name}`)
           return created
@@ -311,6 +311,47 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
         }
       },
 
+      /**
+      * Creates multiple instances of SequelizeEntity in bulk.
+      *
+      * @param entities - An array of SequelizeEntity objects to be created.
+      * @returns A Promise that resolves to an array of created SequelizeEntity objects.
+      * @throws GNXErrorHandler if there is an error creating the entities.
+      */
+      bulkCreate: async function ({ entities }: { entities: T[] }): Promise<T[]> {
+        try {
+          const created = await this.model.bulkCreate(entities as unknown as Array<Creation<T>>, { returning: true })
+          if (!created) throw new Error(`Error creating ${this.model.name}`)
+          return created
+        } catch (e) {
+          throw new GNXErrorHandler({
+            message: e.message,
+            errorType: GNXErrorTypes.CREATION_ERROR
+          })
+        }
+      },
+
+      /**
+      * Deletes all records in the database table associated with the Sequelize model.
+      *
+      * @returns A promise that resolves to a boolean indicating whether the bulk delete operation was successful.
+      * @throws {GNXErrorHandler} If the model is not found in the database.
+      */
+      bulkDelete: async function (): Promise<boolean> {
+        try {
+          await this.model.findAll().then(async (entities) => {
+            for (const entity of entities) {
+              await entity.destroy()
+            }
+          })
+          return true
+        } catch {
+          throw new GNXErrorHandler({
+            message: `${this.model.name} not found`,
+            errorType: GNXErrorTypes.NOT_FOUND_ERROR
+          })
+        }
+      },
       /**
        * Retrieves the schema of the model, excluding specified fields.
        * @param exclude - An object specifying the fields to exclude from  the schema.

@@ -6,12 +6,15 @@ import type { AnyParamConstructor } from '@typegoose/typegoose/lib/types'
 interface ServiceCrud<T extends TypegooseBaseEntity> {
   model: ReturnModelType<AnyParamConstructor<T>>
 }
+type Repository<T extends TypegooseBaseEntity> = GenericService<T> & {
+  model: ReturnModelType<AnyParamConstructor<T>>
+}
 
 function typegooseRepository<T extends TypegooseBaseEntity> ({
   model
 }: ServiceCrud<T>): ClassDecorator {
   return function func (constructor) {
-    Object.assign(constructor.prototype, {
+    Object.assign<any, Repository<T>>(constructor.prototype, {
       model,
       /**
        * Get all entities
@@ -26,8 +29,8 @@ function typegooseRepository<T extends TypegooseBaseEntity> ({
         try {
           const entities = await this.model
             .find()
-            .where('deletedAt')
-            .ne(false)
+            .where('isDeleted')
+            .equals(false)
             .exec()
           return entities as unknown as T[]
         } catch {
@@ -55,10 +58,12 @@ function typegooseRepository<T extends TypegooseBaseEntity> ({
         try {
           const entities = await this.model
             .find()
+            .where('isDeleted')
+            .equals(true)
             .skip((page - 1) * limit)
             .limit(limit)
             .exec()
-          const total = await this.model.countDocuments().exec()
+          const total = await this.model.countDocuments().where('isDeleted').equals(false).exec()
           return {
             entities: entities as unknown as T[],
             currentPage: page,
@@ -85,8 +90,8 @@ function typegooseRepository<T extends TypegooseBaseEntity> ({
         try {
           const entities = await this.model
             .find()
-            .where('deletedAt')
-            .ne(true)
+            .where('isDeleted')
+            .equals(true)
             .exec()
           return entities as unknown as T[]
         } catch {
@@ -264,6 +269,41 @@ function typegooseRepository<T extends TypegooseBaseEntity> ({
         }
       },
 
+      /**
+      * Creates multiple entities in bulk.
+      *
+      * @param entities - The array of entities to be created.
+      * @returns A promise that resolves to an array of created entities.
+      * @throws {GNXErrorHandler} If there is an error when bulk creating.
+      */
+      bulkCreate: async function ({ entities }: { entities: T[] }): Promise<T[]> {
+        try {
+          const created = await this.model.insertMany(entities)
+          return created as unknown as T[]
+        } catch {
+          throw new GNXErrorHandler({
+            message: 'Error when bulk creating',
+            errorType: GNXErrorTypes.CREATION_ERROR
+          })
+        }
+      },
+
+      /**
+      * Deletes multiple documents from the collection.
+      * @returns A promise that resolves to a boolean indicating the success of the   operation.
+      * @throws {GNXErrorHandler} If an error occurs during the bulk delete operation.
+      */
+      bulkDelete: async function (): Promise<boolean> {
+        try {
+          await this.model.deleteMany()
+          return true
+        } catch {
+          throw new GNXErrorHandler({
+            message: 'Error when bulk deleting',
+            errorType: GNXErrorTypes.DELETING_ERROR
+          })
+        }
+      },
       /**
        * Retrieves the schema of the model, excluding specified fields.
        * @param exclude - An object specifying the fields to exclude from the schema.
