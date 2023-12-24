@@ -55,6 +55,8 @@ export interface GenericService<T extends Entity> {
   softDelete: ({ id }: ServiceParamsWithId) => Promise<boolean>
   restore: ({ id }: ServiceParamsWithId) => Promise<boolean>
   hardDelete: ({ id }: ServiceParamsWithId) => Promise<boolean>
+  bulkCreate: ({ entities }: { entities: T[] }) => Promise<T[]>
+  bulkDelete: () => Promise<boolean>
   getSchema: ({ exclude }?: ExcludeFields) => Schema[]
 }
 
