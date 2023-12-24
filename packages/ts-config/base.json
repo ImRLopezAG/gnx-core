@@ -5,7 +5,7 @@
     "target": "ESNext",
     "lib": ["esnext", "dom"],
     "removeComments": false,
-    "module": "ES6",
+    "module": "ESNext",
     "moduleResolution": "node",
     "newLine": "LF",
     "declaration": true,
