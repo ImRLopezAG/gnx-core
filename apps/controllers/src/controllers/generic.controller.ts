@@ -88,10 +88,6 @@ export class GenericControllerService<T extends SequelizeBaseEntity | TypegooseB
   async getAllDeleted (_: Request, res: Response, _next: NextFunction): Promise<Response<T[]> | any> {
     try {
       const records = await this.service.getAllDeleted()
-      console.log({
-        rec: '❤️',
-        data: records
-      })
       return res.status(200).json({
         data: records
       })
@@ -176,7 +172,6 @@ export class GenericControllerService<T extends SequelizeBaseEntity | TypegooseB
       })
     } catch (error) {
       if (error instanceof GNXErrorHandler) {
-        console.log(error)
         return res.status(300).json({ message: error.message })
       }
       return res.status(500).json({
