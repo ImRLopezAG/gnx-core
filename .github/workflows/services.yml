@@ -83,7 +83,7 @@ jobs:
         if: ${{ env.skip == 'false' }}
         run: pnpm build:services
 
-      - name: publish
+      - name: registry
         if: ${{ env.skip == 'false' }}
         run: npm set registry=https://registry.npmjs.org/
 

@@ -50,7 +50,7 @@ jobs:
         if: ${{ env.skip == 'false' }}
         run: pnpm build:cli
 
-      - name: publish
+      - name: registry
         if: ${{ env.skip == 'false' }}
         run: npm set registry=https://registry.npmjs.org/
 
