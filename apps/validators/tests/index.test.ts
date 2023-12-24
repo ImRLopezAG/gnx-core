@@ -3,7 +3,7 @@ import { describe, it } from 'node:test'
 import { ModelValidator } from '../src/validations/model-validator'
 import { FluentValidation } from '../src/validations/validator'
 
-describe('FluentValidation', async () => {
+await describe('FluentValidation', async () => {
   const fluentValidations = FluentValidation.create().for({ value: 'test' })
 
   await it('should be email', () => {
@@ -121,11 +121,9 @@ describe('FluentValidation', async () => {
       true
     )
   })
-}).catch((error) => {
-  console.log(error)
 })
 
-describe('ModelValidator', async () => {
+await describe('ModelValidator', async () => {
   const user = {
     name: 'test',
     age: 20
@@ -169,6 +167,4 @@ describe('ModelValidator', async () => {
       .validate()
     assert.strictEqual(validate, true)
   })
-}).catch((error) => {
-  console.log(error)
 })
