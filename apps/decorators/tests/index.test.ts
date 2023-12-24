@@ -205,10 +205,7 @@ await describe('Typegoose Tests', async () => {
       ...entity
     }
 
-    for (let i = 0; i < 3; i++) {
-      await userService.create({ entity: deleted })
-    }
-
+    await userService.bulkCreate({ entities: Array(3).fill(deleted) })
     const users = await userService.getAllWithDeleted()
     assert.ok(users)
     assert.strictEqual(users.length > 2, true)
@@ -223,6 +220,7 @@ await describe('Typegoose Tests', async () => {
   })
 
   await it('typegoose #getAllPaginated - should get all paginated users', async () => {
+    await userService.bulkCreate({ entities: Array(3).fill(entity) })
     const users = await userService.getAllPaginated({ limit: 3, page: 1 })
     const all = await userService.getAll()
     assert.ok(users)
@@ -240,6 +238,7 @@ await describe('Typegoose Tests', async () => {
     const users = await userService.bulkCreate({ entities: Array(2).fill(entity) })
     assert.ok(users)
     assert.strictEqual(users.length, 2)
+    await userService.bulkDelete()
   })
 
   await it('typegoose #schema - should return the schema', () => {
