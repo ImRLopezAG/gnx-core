@@ -48,6 +48,9 @@ gnx create -n user -d src/services -e js
 ```sh
 gnx create -n user -d src/controllers -e js
 ```
+## 📝 Documentation
+
+[![Documentation](https://img.shields.io/badge/Documentation-000000?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://gnx-udocs.vercel.app)
 
 ### 🛠️ Tools
 

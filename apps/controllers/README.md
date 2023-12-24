@@ -1,123 +1,190 @@
-# 📝 Generics Decorators
+# 📝 Generics Controllers
 
-Generic decorators is a extended library from @gnx-utilities/core
- that allows you to create services with a generic repository, this library is based on the [Sequelizer](https://sequelize.org/) library and also in [Typegoose](https://typegoose.github.io/typegoose/) but based on typescript decorators.
+Generic controllers is a library that allows you to create controllers for your models in a simple way, it is compatible with Sequelize and Typegoose using express as a server. soon it will be compatible with other servers and ORMs/ODMs.
 
 ## 📦 Installation
 
 >[!Note]
->You need to have one of the ORM or ODM to manage the data before. The supported ORMs/ODMs are Sequelize and Typegoose wich needs moongose.
+>You need to have one of the ORM or ODM to manage the data before. The supported ORMs/ODMs are Sequelize and Typegoose wich needs moongose, so you need to install it too if you want the whole experience of the library install it.
 
 ```bash
-npm install @gnx-utilities/decorators @gnx-utilities/models
+npm install @gnx-utilities/service @gnx-utilities/models @gnx-utilities/controller
 ```
 ```bash
-pnpm add @gnx-utilities/decorators @gnx-utilities/models
+pnpm add @gnx-utilities/service @gnx-utilities/models @gnx-utilities/controller
 ```
 ```bash
-yarn add @gnx-utilities/decorators @gnx-utilities/models
+yarn add @gnx-utilities/service @gnx-utilities/models @gnx-utilities/controller
 ```
 ```bash
-bun add @gnx-utilities/decorators @gnx-utilities/models
+bun add @gnx-utilities/service @gnx-utilities/models @gnx-utilities/controller
 ```
 
 ## 📖 Usage
 
-### Sequelize
+### 🔷 Sequelize
 
-```typescript
+```ts
 import { SequelizeBaseEntity } from '@gnx-utilities/models'
+import { SequelizeService } from '@gnx-utilities/services'
 import { DataTypes, Sequelize } from 'sequelize'
-import { sequelizeRepository, getRepository } from '@gnx-utilities/decorators'
+import { GenericControllerService } from '@gnx-utilities/controllers'
+import { Router } from 'express'
+import type { UUID } from 'node:crypto'
 
-export const sequelize = new Sequelize({
+const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: ':memory:'
+  storage: './db/test.sqlite'
 })
 
-export class SequelizeUser extends SequelizeBaseEntity {
+export class User extends SequelizeBaseEntity {
+  declare id: UUID
   declare firstName: string
   declare lastName: string
+  declare email: string
 }
 
-SequelizeUser.init(
+User.init(
   {
+    id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
     firstName: { type: DataTypes.STRING },
-    lastName: { type: DataTypes.STRING }
+    lastName: { type: DataTypes.STRING },
+    email: { type: DataTypes.STRING },
+    isDeleted: { type: DataTypes.BOOLEAN, defaultValue: false }
   },
   { sequelize, modelName: 'person' }
 )
 
-@sequelizeRepository({ model: SequelizeUser })
-export class SequelizeUserService {
-  greeting (): string {
-    return 'Hello, world!'
+class UserService extends SequelizeService<User> {
+  constructor () {
+    super(User)
   }
 }
 
+class UserController extends GenericControllerService<User, UserService> {
+  constructor () {
+    super(new UserService())
+  }
+}
+const controller = new UserController()
+const router: Router = Router()
 
-const userService = getRepository<SequelizeUser, SequelizeUserService>({ repository: SequelizeUserService });
+router.get('/list', controller.getAll)
+router.get('/get/:id', controller.getById)
+router.get('/paginate', controller.getAllPaginated)
+router.get('/all', controller.getAllWithDeleted)
+router.get('/deleted', controller.getAllDeleted)
+router.post('/create', controller.create)
+router.post('/createMany', controller.bulkCreate)
+router.patch('/update/:id', controller.update)
+router.delete('/hide/:id', controller.softDelete)
+router.patch('/restore/:id', controller.restore)
+router.delete('/delete/:id', controller.hardDelete)
+router.delete('/deleteAll', controller.bulkDelete)
 
-const user = await userService.create({ entity: { firstName: 'John', lastName: 'Doe' } });
-
-console.log(user.firstName); // John
+export { router, sequelize }
 ```
 
-### Typegoose
 
->[!Warning]
->Typegoose needs some configuration to work properly, fallow the example below to configure it.
+### 🍃 Typegoose
 
->[!Important]
->On prop decorator you need to add the type of the property, if you don't do this, the library will not work properly.
-
-```typescript
-import { getModelForClass, prop } from '@typegoose/typegoose'
+```ts
 import { TypegooseBaseEntity } from '@gnx-utilities/models'
-import { typegooseRepository } from '../../src/decorators/typegoose.decorator.js'
+import { TypegooseService } from '@gnx-utilities/services'
+import { getModelForClass, prop } from '@typegoose/typegoose'
+import { Router } from 'express'
+import { connect } from 'mongoose'
+import { GenericControllerService } from '@gnx-utilities/controllers'
 
-export class TypegooseUser extends TypegooseBaseEntity {
+const uri = 'mongodb://localhost:27017/?readPreference=primary&ssl=false&directConnection=true'
+
+const connection = async (): Promise<void> => {
+  await connect(uri, { dbName: 'test' })
+}
+
+export class User extends TypegooseBaseEntity {
   @prop({ type: String })
   declare firstName: string
 
   @prop({ type: String })
   declare lastName: string
+
+  @prop({ type: String })
+  declare email: string
 }
 
-export const UserModel = getModelForClass(TypegooseUser)
+export const UserModel = getModelForClass(User)
 
-@typegooseRepository({ model: UserModel })
-export class TypegooseUserService {
-  greeting (): string {
-    return 'Hello, world!'
+export class UserService extends TypegooseService<User> {
+  constructor () {
+    super(UserModel)
   }
 }
 
+export class UserController extends GenericControllerService<User, UserService > {
+  constructor () {
+    super(new UserService())
+  }
+}
 
-const userService = getRepository<TypegooseUser, TypegooseUserService>({ repository: TypegooseUserService });
+const controller = new UserController()
 
-const user = await userService.create({ entity: { firstName: 'John', lastName: 'Doe' } });
+const router: Router = Router()
 
-console.log(user.firstName); // John
+router.get('/list', controller.getAll)
+router.get('/get/:id', controller.getById)
+router.get('/paginate', controller.getAllPaginated)
+router.get('/all', controller.getAllWithDeleted)
+router.get('/deleted', controller.getAllDeleted)
+router.post('/create', controller.create)
+router.post('/createMany', controller.bulkCreate)
+router.patch('/update/:id', controller.update)
+router.delete('/hide/:id', controller.softDelete)
+router.patch('/restore/:id', controller.restore)
+router.delete('/delete/:id', controller.hardDelete)
+router.delete('/deleteAll', controller.bulkDelete)
 
+export { router, connection }
 ```
->[!Note]
->You Can fallow the test configuration to get more information about the configuration.
 
+### Your server
 
-## 📚 Documentation
+```ts
+import express, { json, urlencoded } from 'express'
+import type { Application } from 'express'
+import { sequelizeRouter, sequelize } from './sequelize'
+import { typegooseRouter, connection } from './typegoose'
 
-#### Methods
+const app: Application = express()
 
-| Method | Description |
-| --- | --- |
-| `create({ entity })` | Create a new entity  and return it |
-| `getAll()` | Get all entities |
-| `getById({ id })` | Get an entity by id |
-| `update({ id, entity })` | Update an entity by id |
-| `delete({ id })` | Delete an entity by id |
-| `model` | Get the model of the repository which has the method of the ORM/ODM |
+app.use(json())
+app.use(urlencoded({ extended: true }))
 
+app.get('/', (req, res) => {
+  res.send('Hello World')
+})
+app.use('/api/sequelize', sequelizeRouter)
+app.use('/api/typegoose', typegooseRouter)
+
+async function handleConnection (): Promise<void> {
+  try {
+    await Promise.all([
+      connection(),
+      sequelize.sync({ alter: true })
+    ])
+  } catch (err) {
+    console.error(`Unable to connect to the database: ${err}`)
+  }
+}
+
+await handleConnection()
+
+const port = 4000
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
+export { app, handleConnection }
+```
 ### 🛠️ Tools
 
 
@@ -127,7 +194,9 @@ console.log(user.firstName); // John
 [![NodeJS](https://img.shields.io/badge/NodeJS-339933?logo=node.js&logoColor=white)](https://nodejs.org/es/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
+## 📝 Documentation
 
+[![Documentation](https://img.shields.io/badge/Documentation-000000?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://gnx-udocs.vercel.app)
 
 ## Authors
 

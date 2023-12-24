@@ -86,8 +86,9 @@ console.log(wrongValidation.softValidation()) // { isValid: false, errors: [ 'Th
 console.log(wrongValidation.getErrors()) // [ 'The property name is not valid', 'The property email is not valid', 'The property age is not valid' ]
 ```
 
+## 📝 Documentation
 
-## 📚 Documentation
+[![Documentation](https://img.shields.io/badge/Documentation-000000?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://gnx-udocs.vercel.app)
 
 
 ### 🛠️ Tools

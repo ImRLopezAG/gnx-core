@@ -105,18 +105,9 @@ console.log(user.firstName); // John
 >You Can fallow the test configuration to get more information about the configuration.
 
 
-## 📚 Documentation
+## 📝 Documentation
 
-#### Methods
-
-| Method | Description |
-| --- | --- |
-| `create({ entity })` | Create a new entity  and return it |
-| `getAll()` | Get all entities |
-| `getById({ id })` | Get an entity by id |
-| `update({ id, entity })` | Update an entity by id |
-| `delete({ id })` | Delete an entity by id |
-| `model` | Get the model of the repository which has the method of the ORM/ODM |
+[![Documentation](https://img.shields.io/badge/Documentation-000000?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://gnx-udocs.vercel.app)
 
 ### 🛠️ Tools
 

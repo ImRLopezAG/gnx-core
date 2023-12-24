@@ -41,7 +41,7 @@
   "author": "ImRLopezAg",
   "license": "MIT",
   "scripts": {
-    "build": "turbo build",
+    "build": "turbo build --log-order=grouped",
     "build:pkg": "pnpm build && tsup",
     "dev": "turbo dev",
     "test": "turbo test --log-order=grouped",

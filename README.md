@@ -151,7 +151,9 @@ export class UserService extends TypegooseService {
 ```
 
 
-## 📚 Documentation
+## 📝 Documentation
+
+[![Documentation](https://img.shields.io/badge/Documentation-000000?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://gnx-udocs.vercel.app)
 
 
 ### 🛠️ Tools

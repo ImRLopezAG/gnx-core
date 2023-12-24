@@ -95,17 +95,10 @@ const user = await userService.create({ entity: { firstName: 'John', lastName: '
 console.log(user.firstName); // John
 ```
 
-## 📚 Documentation
+## 📝 Documentation
 
-#### Methods
+[![Documentation](https://img.shields.io/badge/Documentation-000000?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://gnx-udocs.vercel.app)
 
-| Method | Description |
-| --- | --- |
-| `create({ entity })` | Create a new entity  and return it |
-| `getAll()` | Get all entities |
-| `getById({ id })` | Get an entity by id |
-| `update({ id, entity })` | Update an entity by id |
-| `delete({ id })` | Delete an entity by id |
 
 ### 🛠️ Tools
 

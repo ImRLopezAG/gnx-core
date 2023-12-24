@@ -151,17 +151,9 @@ export class UserService extends TypegooseService {
 ```
 
 
-## 📚 Documentation
+## 📝 Documentation
 
-#### Methods
-
-| Method | Description | Return |
-| --- | --- | --- |
-| `create({ entity })` | Create a new entity  and return it | Entity |
-| `getAll()` | Get all entities | Entity[] |
-| `getById({ id })` | Get an entity by id | Entity |
-| `update({ id, entity })` | Update an entity by id | Entity |
-| `delete({ id })` | Delete an entity by id | Boolean |
+[![Documentation](https://img.shields.io/badge/Documentation-000000?style=for-the-badge&logo=read-the-docs&logoColor=white)](https://gnx-udocs.vercel.app)
 
 ### 🛠️ Tools
 
