@@ -1,20 +1,21 @@
-import { connect } from 'mongoose'
 import assert from 'node:assert'
 import { describe, it } from 'node:test'
 import { SequelizeUserService, sequelize } from './sequelize'
-import { TypegooseUserService } from './typegoose'
+import { TypegooseUserService, connection } from './typegoose'
 
 const entity = {
   firstName: 'John',
-  lastName: 'Doe'
-}
+  lastName: 'Doe',
+  email: 'test@testing.com'
+} as const
 
-type Sequelize = typeof entity & { id: number | string }
-type Typegoose = typeof entity & { _id?: string }
+const withId = {
+  ...entity,
+  id: ''
+}
 
 await describe('Sequelize Tests', async () => {
   const userService = new SequelizeUserService()
-  let user: Sequelize
   await sequelize.sync({ alter: true }).catch((err) => {
     throw new Error(`Test: Unable to connect database ${err}`)
   })
@@ -23,7 +24,7 @@ await describe('Sequelize Tests', async () => {
     const createdUser = await userService.create({
       entity
     })
-    user = createdUser
+    withId.id = createdUser.dataValues.id
     assert.ok(createdUser)
     assert.strictEqual(createdUser.firstName, 'John')
   })
@@ -31,46 +32,40 @@ await describe('Sequelize Tests', async () => {
   await it('sequelize #getAll - should get all users', async () => {
     const foundUser = await userService.getAll()
     assert.ok(foundUser)
+    assert.strictEqual(foundUser.every((user) => user.dataValues.isDeleted), false)
   })
 
   await it('sequelize #getById - should get user by id', async () => {
-    const foundUser = await userService.getById({ id: user.id })
+    const foundUser = await userService.getById({ id: withId.id })
     assert.ok(foundUser)
-    assert.strictEqual(foundUser.firstName, user.firstName)
+    assert.strictEqual(foundUser.firstName, entity.firstName)
   })
 
   await it('sequelize #update - should update user', async () => {
     const updatedUser = await userService.update({
       entity: { firstName: 'Jane' },
-      id: user.id
+      id: withId.id
     })
     if (updatedUser) {
-      user = updatedUser
+      withId.firstName = updatedUser.dataValues.firstName
+      withId.lastName = updatedUser.dataValues.lastName
     }
     assert.ok(updatedUser)
-    assert.strictEqual(updatedUser.firstName, user.firstName)
-    assert.strictEqual(updatedUser.lastName, user.lastName)
+    assert.strictEqual(updatedUser.firstName, withId.firstName)
+    assert.strictEqual(updatedUser.lastName, withId.lastName)
   })
 
   await it('sequelize #softDelete - should soft delete user', async () => {
-    const user = await userService.create({ entity })
-    const soft = await userService.softDelete({ id: user.id })
-
-    assert.ok(soft)
-    await userService.hardDelete({ id: user.id })
+    assert.ok(await userService.softDelete({ id: withId.id }))
   })
 
   await it('sequelize #restore - should restore user', async () => {
-    const user = await userService.create({ entity })
-    await userService.softDelete({ id: user.id })
-    const restore = await userService.restore({ id: user.id })
-
-    assert.ok(restore)
+    assert.ok(await userService.restore({ id: withId.id }))
   })
 
   await it('sequelize #hardDelete - should hard delete user', async () => {
     const user = await userService.create({ entity })
-    const hard = await userService.hardDelete({ id: user.id })
+    const hard = await userService.hardDelete({ id: user.dataValues.id })
     assert.ok(hard)
   })
 
@@ -79,9 +74,7 @@ await describe('Sequelize Tests', async () => {
       isDeleted: true,
       ...entity
     }
-    for (let i = 0; i < 3; i++) {
-      await userService.create({ entity: deleted })
-    }
+    await userService.bulkCreate({ entities: Array(3).fill(deleted) })
     const users = await userService.getAllDeleted()
     assert.ok(users)
     assert.strictEqual(users.length >= 3, true)
@@ -96,9 +89,7 @@ await describe('Sequelize Tests', async () => {
   })
 
   await it('sequelize #getAllPaginated - should get all paginated users', async () => {
-    for (let i = 0; i < 3; i++) {
-      await userService.create({ entity })
-    }
+    await userService.bulkCreate({ entities: Array(10).fill(entity) })
     const users = await userService.getAllPaginated({ limit: 3, page: 1 })
     const all = await userService.getAll()
 
@@ -116,6 +107,7 @@ await describe('Sequelize Tests', async () => {
     const users = await userService.bulkCreate({ entities: Array(2).fill(entity) })
     assert.ok(users)
     assert.strictEqual(users.length, 2)
+    await userService.bulkDelete()
   })
 
   await it('sequelize #schema - should return the schema', () => {
@@ -125,24 +117,17 @@ await describe('Sequelize Tests', async () => {
 })
 
 await describe('Typegoose Tests', async () => {
-  const uri = 'mongodb://localhost:27017/?readPreference=primary&ssl=false&directConnection=true'
-  const userService = new TypegooseUserService()
-
-  connect(uri, {
-    dbName: 'test'
+  await connection().then(() => {
+    console.log('Typegoose connected! 🍃')
+  }).catch((err) => {
+    throw new Error(`Test: Unable to connect database ${err}`)
   })
-    .then(() => {
-      console.log('Mongo db connected🍃')
-    })
-    .catch((err) => {
-      throw new Error(`Test: Unable to connect to mongodb ${err}`)
-    })
 
-  let user: Typegoose
+  const userService = new TypegooseUserService()
 
   await it('typegoose #create - should create user', async () => {
     const createdUser = await userService.create({ entity })
-    user = createdUser
+    withId.id = createdUser._id
     assert.ok(createdUser)
     assert.strictEqual(createdUser.firstName, 'John')
   })
@@ -154,7 +139,7 @@ await describe('Typegoose Tests', async () => {
   })
 
   await it('typegoose #getById - should get user by id', async () => {
-    const founded = await userService.getById({ id: String(user._id) })
+    const founded = await userService.getById({ id: withId.id })
     assert.ok(founded)
     assert.strictEqual(founded.firstName, 'John')
   })
@@ -162,28 +147,28 @@ await describe('Typegoose Tests', async () => {
   await it('typegoose #update - should update user', async () => {
     const updated = await userService.update({
       entity: { firstName: 'Jane' },
-      id: String(user._id)
+      id: withId.id
     })
 
     assert.ok(updated)
     assert.strictEqual(updated.firstName, 'Jane')
-    assert.strictEqual(updated.lastName, user.lastName)
+    assert.strictEqual(updated.lastName, withId.lastName)
   })
 
   await it('typegoose #softDelete - should soft delete user', async () => {
-    const deleted = await userService.softDelete({ id: String(user._id) })
+    const deleted = await userService.softDelete({ id: withId.id })
 
     assert.ok(deleted)
   })
 
   await it('typegoose #restore - should restore user', async () => {
-    const restored = await userService.restore({ id: String(user._id) })
+    const restored = await userService.restore({ id: withId.id })
 
     assert.ok(restored)
   })
 
   await it('typegoose #hardDelete - should hard delete user', async () => {
-    const hard = await userService.hardDelete({ id: String(user._id) })
+    const hard = await userService.hardDelete({ id: withId.id })
 
     assert.ok(hard)
   })
