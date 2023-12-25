@@ -11,7 +11,7 @@ const connection = async (): Promise<void> => {
   await connect(uri, { dbName: 'test' })
 }
 
-export class User extends TypegooseBaseEntity {
+class User extends TypegooseBaseEntity {
   @prop({ type: String })
   declare firstName: string
 
@@ -22,15 +22,13 @@ export class User extends TypegooseBaseEntity {
   declare email: string
 }
 
-export const UserModel = getModelForClass(User)
-
-export class TypegooseUserService extends TypegooseService<User> {
+const UserModel = getModelForClass(User)
+class TypegooseUserService extends TypegooseService<User> {
   constructor () {
     super(UserModel)
   }
 }
-
-export class TypegooseUserController extends GenericControllerService<User, TypegooseUserService > {
+class TypegooseUserController extends GenericControllerService<User, TypegooseUserService > {
   constructor () {
     super(new TypegooseUserService())
   }

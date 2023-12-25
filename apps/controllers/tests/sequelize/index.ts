@@ -5,12 +5,12 @@ import { GenericControllerService } from '../../src'
 import { Router } from 'express'
 import type { UUID } from 'node:crypto'
 
-export const sequelize = new Sequelize({
+const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: './db/test.sqlite'
 })
 
-export class User extends SequelizeBaseEntity {
+class User extends SequelizeBaseEntity {
   declare id: UUID
   declare firstName: string
   declare lastName: string
@@ -55,4 +55,4 @@ sequelizeRouter.patch('/restore/:id', controller.restore)
 sequelizeRouter.delete('/delete/:id', controller.hardDelete)
 sequelizeRouter.delete('/deleteAll', controller.bulkDelete)
 
-export { sequelizeRouter }
+export { sequelizeRouter, sequelize }
