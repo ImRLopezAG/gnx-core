@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@gnx-utilities/cli':
-        specifier: '*'
-        version: link:apps/cli
       '@gnx-utilities/controllers':
         specifier: '*'
         version: link:apps/controllers
@@ -253,6 +250,144 @@ importers:
         version: 6.1.1(eslint@8.56.0)
 
   packages/ts-config: {}
+
+  tests/controllers:
+    dependencies:
+      '@gnx-utilities/controllers':
+        specifier: '*'
+        version: link:../../apps/controllers
+      '@gnx-utilities/models':
+        specifier: '*'
+        version: link:../../apps/models
+      '@gnx-utilities/services':
+        specifier: '*'
+        version: link:../../apps/services
+      express:
+        specifier: '*'
+        version: 4.18.2
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/ts-config':
+        specifier: workspace:*
+        version: link:../../packages/ts-config
+      '@typegoose/typegoose':
+        specifier: '*'
+        version: 12.0.0(mongoose@8.0.3)
+      '@types/express':
+        specifier: '*'
+        version: 4.17.21
+      '@types/node':
+        specifier: '*'
+        version: 20.10.5
+      '@types/supertest':
+        specifier: '*'
+        version: 6.0.1
+      mongoose:
+        specifier: '*'
+        version: 8.0.3
+      sequelize:
+        specifier: '*'
+        version: 6.35.2(sqlite3@5.1.6)
+      sqlite3:
+        specifier: '*'
+        version: 5.1.6
+      supertest:
+        specifier: '*'
+        version: 6.3.3
+      tsup:
+        specifier: ^8.0.1
+        version: 8.0.1(@swc/core@1.3.101)(typescript@5.3.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  tests/decorators:
+    dependencies:
+      '@gnx-utilities/decorators':
+        specifier: '*'
+        version: link:../../apps/decorators
+      '@gnx-utilities/models':
+        specifier: '*'
+        version: link:../../apps/models
+      '@swc/core':
+        specifier: ^1.3.100
+        version: 1.3.101
+      '@typegoose/typegoose':
+        specifier: '*'
+        version: 12.0.0(mongoose@8.0.3)
+      mongoose:
+        specifier: '*'
+        version: 8.0.3
+      sequelize:
+        specifier: '*'
+        version: 6.35.2(sqlite3@5.1.6)
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/ts-config':
+        specifier: workspace:*
+        version: link:../../packages/ts-config
+      sqlite3:
+        specifier: ^5.1.6
+        version: 5.1.6
+      tsup:
+        specifier: ^8.0.1
+        version: 8.0.1(@swc/core@1.3.101)(typescript@5.3.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  tests/services:
+    dependencies:
+      '@gnx-utilities/models':
+        specifier: '*'
+        version: link:../../apps/models
+      '@gnx-utilities/services':
+        specifier: '*'
+        version: link:../../apps/services
+      '@typegoose/typegoose':
+        specifier: '*'
+        version: 12.0.0(mongoose@8.0.3)
+      mongoose:
+        specifier: '*'
+        version: 8.0.3
+      sequelize:
+        specifier: '*'
+        version: 6.35.2(sqlite3@5.1.6)
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/ts-config':
+        specifier: workspace:*
+        version: link:../../packages/ts-config
+      sqlite3:
+        specifier: ^5.1.6
+        version: 5.1.6
+      tsup:
+        specifier: ^8.0.1
+        version: 8.0.1(@swc/core@1.3.101)(typescript@5.3.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  tests/validators:
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
+      '@repo/ts-config':
+        specifier: workspace:*
+        version: link:../../packages/ts-config
+      tsup:
+        specifier: ^8.0.1
+        version: 8.0.1(@swc/core@1.3.101)(typescript@5.3.3)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
 
 packages:
 

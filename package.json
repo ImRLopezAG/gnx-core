@@ -52,16 +52,10 @@
     "build:validators": "turbo build --filter @gnx-utilities/validators",
     "build:controllers": "turbo build --filter @gnx-utilities/controllers",
     "build:cli": "turbo build --filter @gnx-utilities/cli",
-    "test:services": "turbo test --filter @gnx-utilities/services --log-order=grouped",
-    "test:decorators": "turbo test --filter @gnx-utilities/decorators --log-order=grouped",
-    "test:validators": "turbo test --filter @gnx-utilities/validators --log-order=grouped",
-    "test:controllers": "turbo test --filter @gnx-utilities/controllers --log-order=grouped",
-    "pub:services": "turbo publish --filter @gnx-utilities/services",
-    "pub:models": "turbo publish --filter @gnx-utilities/models",
-    "pub:validators": "turbo publish --filter @gnx-utilities/validators",
-    "pub:decorators": "turbo publish --filter @gnx-utilities/decorators",
-    "pub:controllers": "turbo publish --filter @gnx-utilities/controllers",
-    "pub:cli": "turbo publish --filter @gnx-utilities/cli"
+    "test:services": "turbo test --filter @test/services --log-order=grouped",
+    "test:decorators": "turbo test --filter @test/decorators --log-order=grouped",
+    "test:validators": "turbo test --filter @test/validators --log-order=grouped",
+    "test:controllers": "turbo test --filter @test/controllers --log-order=grouped"
   },
   "dependencies": {
     "@gnx-utilities/decorators": "*",
