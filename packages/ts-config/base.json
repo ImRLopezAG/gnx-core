@@ -21,6 +21,6 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "include": ["../../apps/**/*.ts", "../../tsup.config.ts"],
+  "include": ["../../apps/**/*.ts","../../tests/**/*.ts", "../../tsup.config.ts"],
   "exclude": ["**/*/node_modules/**/*"]
 }
