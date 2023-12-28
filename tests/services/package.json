@@ -1,0 +1,45 @@
+{
+  "name": "@test/services",
+  "version": "0.1.35",
+  "description": "Generic services is a library that allows you to create services for your models in a simple way, it is compatible with sequelize, mongoose and typegoose",
+  "main": "index.test.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImRLopezAG/gnx-core.git"
+  },
+  "homepage": "https://gnx-udocs.vercel.app",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "sequelize",
+    "mongoose",
+    "typegoose",
+    "generic"
+  ],
+  "author": "ImRLopezAg",
+  "license": "MIT",
+  "scripts": {
+    "test": "tsup && node --test"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/ts-config": "workspace:*",
+    "tsup": "^8.0.1",
+    "sqlite3": "^5.1.6",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@gnx-utilities/models": "*",
+    "@gnx-utilities/services": "*",
+    "@typegoose/typegoose": "*",
+    "mongoose": "*",
+    "sequelize": "*"
+  }
+}
