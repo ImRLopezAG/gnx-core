@@ -41,8 +41,7 @@
   "author": "ImRLopezAg",
   "license": "MIT",
   "scripts": {
-    "build": "tsup",
-    "test": "tsup && node --test"
+    "build": "tsup"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

@@ -41,9 +41,7 @@
   "author": "ImRLopezAg",
   "license": "MIT",
   "scripts": {
-    "start": "pnpm build && node ./lib/index.js",
-    "build": "tsup",
-    "test": "tsup && node --test"
+    "build": "tsup"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
