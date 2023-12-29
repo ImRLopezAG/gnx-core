@@ -49,7 +49,7 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
           }
         }
       })
-      return entities
+      return entities.map(e => e.dataValues)
     } catch {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
@@ -81,7 +81,7 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
         limit
       })
       return {
-        entities: data.rows,
+        entities: data.rows.map(e => e.dataValues),
         currentPage: page,
         totalPages: Math.ceil(data.count / limit)
       }
@@ -112,7 +112,7 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
           }
         }
       })
-      return entities
+      return entities.map(e => e.dataValues)
     } catch {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
@@ -134,7 +134,7 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
   async getAllWithDeleted (): Promise<SequelizeEntity[]> {
     try {
       const entities = await this.model.findAll()
-      return entities
+      return entities.map(e => e.dataValues)
     } catch {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
@@ -156,7 +156,7 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
   async getById ({ id }: ServiceParamsWithId): Promise<SequelizeEntity | null> {
     try {
       const entity = await this.model.findByPk(id)
-      return entity
+      return entity?.dataValues ?? null
     } catch {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
@@ -179,7 +179,7 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
     try {
       const created = await this.model.create(entity as unknown as Creation<SequelizeEntity>)
       if (!created) throw new Error(`Error creating ${this.model.name}`)
-      return created
+      return created.dataValues
     } catch (e) {
       throw new GNXErrorHandler({
         message: e.message,
@@ -289,7 +289,7 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
     try {
       const created = await this.model.bulkCreate(entities as unknown as Array<Creation<SequelizeEntity>>, { returning: true })
       if (!created) throw new Error(`Error creating ${this.model.name}`)
-      return created
+      return created.map(e => e.dataValues)
     } catch (e) {
       throw new GNXErrorHandler({
         message: e.message,

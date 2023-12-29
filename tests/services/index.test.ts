@@ -24,7 +24,7 @@ await describe('Sequelize Tests', async () => {
     const createdUser = await userService.create({
       entity
     })
-    withId.id = createdUser.dataValues.id
+    withId.id = createdUser.id
     assert.ok(createdUser)
     assert.strictEqual(createdUser.firstName, 'John')
   })
@@ -32,7 +32,10 @@ await describe('Sequelize Tests', async () => {
   await it('sequelize #getAll - should get all users', async () => {
     const foundUser = await userService.getAll()
     assert.ok(foundUser)
-    assert.strictEqual(foundUser.every((user) => user.dataValues.isDeleted), false)
+    assert.strictEqual(
+      foundUser.every((user) => user.isDeleted),
+      false
+    )
   })
 
   await it('sequelize #getById - should get user by id', async () => {
@@ -47,8 +50,8 @@ await describe('Sequelize Tests', async () => {
       id: withId.id
     })
     if (updatedUser) {
-      withId.firstName = updatedUser.dataValues.firstName
-      withId.lastName = updatedUser.dataValues.lastName
+      withId.firstName = updatedUser.firstName
+      withId.lastName = updatedUser.lastName
     }
     assert.ok(updatedUser)
     assert.strictEqual(updatedUser.firstName, withId.firstName)
@@ -65,7 +68,7 @@ await describe('Sequelize Tests', async () => {
 
   await it('sequelize #hardDelete - should hard delete user', async () => {
     const user = await userService.create({ entity })
-    const hard = await userService.hardDelete({ id: user.dataValues.id })
+    const hard = await userService.hardDelete({ id: user.id })
     assert.ok(hard)
   })
 
@@ -78,14 +81,20 @@ await describe('Sequelize Tests', async () => {
     const users = await userService.getAllDeleted()
     assert.ok(users)
     assert.strictEqual(users.length >= 3, true)
-    assert.strictEqual(users.every((user) => user.dataValues.isDeleted), true)
+    assert.strictEqual(
+      users.every((user) => user.isDeleted),
+      true
+    )
   })
 
   await it('sequelize #getAllWithDeleted - should get all users with deleted', async () => {
     const users = await userService.getAllWithDeleted()
     assert.ok(users)
     assert.strictEqual(users.length > 0, true)
-    assert.strictEqual(users.some((user) => user.dataValues.isDeleted), true)
+    assert.strictEqual(
+      users.some((user) => user.isDeleted),
+      true
+    )
   })
 
   await it('sequelize #getAllPaginated - should get all paginated users', async () => {
@@ -104,7 +113,9 @@ await describe('Sequelize Tests', async () => {
   })
 
   await it('sequelize #bulkCreate - should bulk create users', async () => {
-    const users = await userService.bulkCreate({ entities: Array(2).fill(entity) })
+    const users = await userService.bulkCreate({
+      entities: Array(2).fill(entity)
+    })
     assert.ok(users)
     assert.strictEqual(users.length, 2)
     await userService.bulkDelete()
@@ -117,11 +128,13 @@ await describe('Sequelize Tests', async () => {
 })
 
 await describe('Typegoose Tests', async () => {
-  await connection().then(() => {
-    console.log('Typegoose connected! 🍃')
-  }).catch((err) => {
-    throw new Error(`Test: Unable to connect database ${err}`)
-  })
+  await connection()
+    .then(() => {
+      console.log('Typegoose connected! 🍃')
+    })
+    .catch((err) => {
+      throw new Error(`Test: Unable to connect database ${err}`)
+    })
 
   const userService = new TypegooseUserService()
 
@@ -135,7 +148,10 @@ await describe('Typegoose Tests', async () => {
   await it('Typegoose #getAll - should get all users', async () => {
     const users = await userService.getAll()
     assert.ok(users)
-    assert.strictEqual(users.every((user) => user.isDeleted), false)
+    assert.strictEqual(
+      users.every((user) => user.isDeleted),
+      false
+    )
   })
 
   await it('typegoose #getById - should get user by id', async () => {
@@ -186,14 +202,20 @@ await describe('Typegoose Tests', async () => {
     const users = await userService.getAllWithDeleted()
     assert.ok(users)
     assert.strictEqual(users.length > 2, true)
-    assert.strictEqual(users.some((user) => user.isDeleted), true)
+    assert.strictEqual(
+      users.some((user) => user.isDeleted),
+      true
+    )
   })
 
   await it('typegoose #getAllDeleted - should get all deleted users', async () => {
     const users = await userService.getAllDeleted()
     assert.ok(users)
     assert.strictEqual(users.length > 0, true)
-    assert.strictEqual(users.every((user) => user.isDeleted), true)
+    assert.strictEqual(
+      users.every((user) => user.isDeleted),
+      true
+    )
   })
 
   await it('typegoose #getAllPaginated - should get all paginated users', async () => {
@@ -212,7 +234,9 @@ await describe('Typegoose Tests', async () => {
   })
 
   await it('typegoose #bulkCreate - should bulk create users', async () => {
-    const users = await userService.bulkCreate({ entities: Array(2).fill(entity) })
+    const users = await userService.bulkCreate({
+      entities: Array(2).fill(entity)
+    })
 
     assert.ok(users)
     assert.strictEqual(users.length, 2)
