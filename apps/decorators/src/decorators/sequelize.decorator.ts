@@ -72,7 +72,7 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
               }
             }
           })
-          return entities
+          return entities.map(e => e.dataValues)
         } catch {
           throw new GNXErrorHandler({
             message: `${this.model.name} not found`,
@@ -106,7 +106,7 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
             limit
           })
           return {
-            entities: data.rows,
+            entities: data.rows.map(e => e.dataValues),
             currentPage: page,
             totalPages: Math.ceil(data.count / limit)
           }
@@ -136,7 +136,7 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
               }
             }
           })
-          return entities
+          return entities.map(e => e.dataValues)
         } catch {
           throw new GNXErrorHandler({
             message: `${this.model.name} not found`,
@@ -158,7 +158,7 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
       getAllWithDeleted: async function (): Promise<T[]> {
         try {
           const entities = await this.model.findAll()
-          return entities
+          return entities.map(e => e.dataValues)
         } catch {
           throw new GNXErrorHandler({
             message: `${this.model.name} not found`,
@@ -181,7 +181,7 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
       getById: async function ({ id }: ServiceParamsWithId): Promise<T | null> {
         try {
           const entity = await this.model.findByPk(id)
-          return entity
+          return entity.dataValues ?? null
         } catch {
           throw new GNXErrorHandler({
             message: `${this.model.name} not found`,
@@ -206,7 +206,7 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
             entity as unknown as Creation<T>
           )
           if (!created) throw new Error(`Error creating ${this.model.name}`)
-          return created
+          return created.dataValues
         } catch (e) {
           throw new GNXErrorHandler({
             message: e.message,
@@ -322,7 +322,7 @@ function sequelizeRepository<T extends SequelizeBaseEntity> ({ model }: ISequeli
         try {
           const created = await this.model.bulkCreate(entities as unknown as Array<Creation<T>>, { returning: true })
           if (!created) throw new Error(`Error creating ${this.model.name}`)
-          return created
+          return created.map(e => e.dataValues)
         } catch (e) {
           throw new GNXErrorHandler({
             message: e.message,
