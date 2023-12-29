@@ -1,6 +1,6 @@
 {
   "name": "@gnx-utilities/core",
-  "version": "1.0.79",
+  "version": "1.0.8",
   "description": "GNX is a collect of utilities that are used across all of our projects. It is a collection of utilities that we have found useful in our projects and we hope you will find them useful in yours. We have tried to make them as generic as possible so that they can be used in any project, but we have also tried to make them as customizable as possible so that they can be used in any project.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
