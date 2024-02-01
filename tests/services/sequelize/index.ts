@@ -15,6 +15,13 @@ export class User extends SequelizeBaseEntity {
   declare email: string
 }
 
+export class Todo extends SequelizeBaseEntity {
+  declare id: number
+  declare title: string
+  declare completed: boolean
+  declare userId: UUID
+}
+
 User.init(
   {
     id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
@@ -23,8 +30,28 @@ User.init(
     email: { type: DataTypes.STRING },
     isDeleted: { type: DataTypes.BOOLEAN, defaultValue: false }
   },
-  { sequelize, modelName: 'person' }
+  { sequelize, modelName: 'user' }
 )
+
+Todo.init(
+  {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    title: { type: DataTypes.STRING },
+    completed: { type: DataTypes.BOOLEAN },
+    userId: { type: DataTypes.UUID },
+    isDeleted: { type: DataTypes.BOOLEAN, defaultValue: false }
+  },
+  { sequelize, modelName: 'todo' }
+)
+
+User.hasMany(Todo, { foreignKey: 'userId' })
+Todo.belongsTo(User)
+
+export class SequelizeTodoService extends SequelizeService<Todo> {
+  constructor () {
+    super(Todo)
+  }
+}
 
 export class SequelizeUserService extends SequelizeService<User> {
   constructor () {

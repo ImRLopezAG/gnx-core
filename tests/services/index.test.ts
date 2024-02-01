@@ -1,6 +1,6 @@
 import assert from 'node:assert'
 import { describe, it } from 'node:test'
-import { SequelizeUserService, sequelize } from './sequelize'
+import { SequelizeUserService, SequelizeTodoService, sequelize } from './sequelize'
 import { TypegooseUserService, connection } from './typegoose'
 
 const entity = {
@@ -16,6 +16,7 @@ const withId = {
 
 await describe('Sequelize Tests', async () => {
   const userService = new SequelizeUserService()
+  const todoService = new SequelizeTodoService()
   await sequelize.sync({ alter: true }).catch((err) => {
     throw new Error(`Test: Unable to connect database ${err}`)
   })
@@ -124,6 +125,28 @@ await describe('Sequelize Tests', async () => {
   await it('sequelize #schema - should return the schema', () => {
     const schema = userService.getSchema({ exclude: ['id'] })
     assert.strictEqual(schema.length === 0, true)
+  })
+
+  await it('sequelize #create - should create todo', async () => {
+    const user = await userService.create({ entity })
+    withId.id = user.id
+    const todo = await todoService.create({
+      entity: {
+        title: 'Test',
+        userId: user.id
+      }
+    })
+    console.log('🚀❤', todo)
+    assert.ok(todo)
+    assert.strictEqual(todo.title, 'Test')
+    assert.strictEqual(todo.userId, user.id)
+    assert.strictEqual(todo.id > 0, true)
+  })
+
+  await it('sequelize #getAll - should get all todos', async () => {
+    const todos = await todoService.getAll()
+    assert.ok(todos)
+    assert.strictEqual(todos.length > 0, true)
   })
 })
 

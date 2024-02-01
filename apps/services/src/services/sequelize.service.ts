@@ -50,10 +50,11 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
         }
       })
       return entities.map(e => e.dataValues)
-    } catch {
+    } catch (originalError) {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
-        errorType: GNXErrorTypes.GETTING_ERROR
+        errorType: GNXErrorTypes.GETTING_ERROR,
+        originalError
       })
     }
   }
@@ -85,10 +86,11 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
         currentPage: page,
         totalPages: Math.ceil(data.count / limit)
       }
-    } catch {
+    } catch (originalError) {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
-        errorType: GNXErrorTypes.GETTING_ERROR
+        errorType: GNXErrorTypes.GETTING_ERROR,
+        originalError
       })
     }
   }
@@ -113,10 +115,11 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
         }
       })
       return entities.map(e => e.dataValues)
-    } catch {
+    } catch (originalError) {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
-        errorType: GNXErrorTypes.GETTING_ERROR
+        errorType: GNXErrorTypes.GETTING_ERROR,
+        originalError
       })
     }
   }
@@ -135,10 +138,11 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
     try {
       const entities = await this.model.findAll()
       return entities.map(e => e.dataValues)
-    } catch {
+    } catch (originalError) {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
-        errorType: GNXErrorTypes.GETTING_ERROR
+        errorType: GNXErrorTypes.GETTING_ERROR,
+        originalError
       })
     }
   }
@@ -157,10 +161,11 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
     try {
       const entity = await this.model.findByPk(id)
       return entity?.dataValues ?? null
-    } catch {
+    } catch (originalError) {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
-        errorType: GNXErrorTypes.ID_NOT_FOUND_ERROR
+        errorType: GNXErrorTypes.GETTING_ERROR,
+        originalError
       })
     }
   }
@@ -179,11 +184,15 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
     try {
       const created = await this.model.create(entity as unknown as Creation<SequelizeEntity>)
       if (!created) throw new Error(`Error creating ${this.model.name}`)
+      if (created.id !== undefined) {
+        created.dataValues.id = created.id
+      }
       return created.dataValues
-    } catch (e) {
+    } catch (originalError) {
       throw new GNXErrorHandler({
-        message: e.message,
-        errorType: GNXErrorTypes.CREATION_ERROR
+        message: `${this.model.name} could not be created`,
+        errorType: GNXErrorTypes.CREATION_ERROR,
+        originalError
       })
     }
   }
@@ -204,10 +213,11 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
       if (!item) throw new Error(`${this.model.name} not found`)
       const updated = await item.update(entity)
       return updated
-    } catch {
+    } catch (originalError) {
       throw new GNXErrorHandler({
-        message: `${this.model.name} not found`,
-        errorType: GNXErrorTypes.UPDATING_ERROR
+        message: `${this.model.name} could not be updated`,
+        errorType: GNXErrorTypes.UPDATING_ERROR,
+        originalError
       })
     }
   }
@@ -226,10 +236,11 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
       if (!entity) throw new Error(`${this.model.name} not found`)
       await entity.destroy()
       return true
-    } catch {
+    } catch (originalError) {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
-        errorType: GNXErrorTypes.NOT_FOUND_ERROR
+        errorType: GNXErrorTypes.GETTING_ERROR,
+        originalError
       })
     }
   }
@@ -249,10 +260,11 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
       if (!entity) throw new Error(`${this.model.name} not found`)
       await entity.update({ isDeleted: true })
       return true
-    } catch {
+    } catch (originalError) {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
-        errorType: GNXErrorTypes.NOT_FOUND_ERROR
+        errorType: GNXErrorTypes.GETTING_ERROR,
+        originalError
       })
     }
   }
@@ -270,10 +282,11 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
     try {
       await this.update({ id, entity: { isDeleted: false } })
       return true
-    } catch {
+    } catch (originalError) {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
-        errorType: GNXErrorTypes.NOT_FOUND_ERROR
+        errorType: GNXErrorTypes.GETTING_ERROR,
+        originalError
       })
     }
   }
@@ -312,10 +325,11 @@ export abstract class SequelizeService<SequelizeEntity extends SequelizeBaseEnti
         }
       })
       return true
-    } catch {
+    } catch (originalError) {
       throw new GNXErrorHandler({
         message: `${this.model.name} not found`,
-        errorType: GNXErrorTypes.NOT_FOUND_ERROR
+        errorType: GNXErrorTypes.GETTING_ERROR,
+        originalError
       })
     }
   }
