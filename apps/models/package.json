@@ -1,6 +1,6 @@
 {
   "name": "@gnx-utilities/models",
-  "version": "0.2.45",
+  "version": "0.2.46",
   "description": "Generic models is a library that allows you to create models for sequelize, mongoose and typegoose in a generic way, without having to write the same code over and over again.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

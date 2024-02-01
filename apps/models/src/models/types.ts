@@ -63,6 +63,7 @@ export interface GenericService<T extends Entity> {
 export interface GNXError {
   message: string
   errorType: GNXErrorTypes
+  originalError?: Error
 }
 
 export enum GNXErrorTypes {
